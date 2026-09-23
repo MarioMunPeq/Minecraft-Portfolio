@@ -1,0 +1,303 @@
+@font-face {
+  font-family: 'Monocraft';
+  src: url('/fonts/Monocraft.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --mc-bg: #1a1a1a;
+  --mc-panel-bg: #2a2a2a;
+  --mc-panel-border: #555555;
+  --mc-button-bg: #8b8b8b;
+  --mc-button-border-light: #ffffff;
+  --mc-button-border-dark: #4a4a4a;
+  --mc-button-text: #ffffff;
+  --mc-button-text-shadow: #000000;
+  --mc-hover-bg: #3a3a3a;
+  --mc-hover-border: #ffffff;
+  --mc-text: #ffffff;
+  --mc-text-shadow: #000000;
+  --mc-disabled: #555555;
+  --mc-disabled-text: #888888;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Monocraft', 'Minecraftia', monospace;
+  font-size: 16px;
+  line-height: 1.4;
+  background: var(--mc-bg);
+  color: var(--mc-text);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeSpeed;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.mc-screen {
+  width: 100%;
+  height: 100%;
+  max-width: 854px;
+  max-height: 480px;
+  aspect-ratio: 854 / 480;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: var(--mc-bg);
+}
+
+.mc-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 20%, #2a2a2a 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, #1f1f1f 0%, transparent 50%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.1) 2px,
+      rgba(0,0,0,0.1) 4px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mc-logo {
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+  border-bottom: 2px solid var(--mc-panel-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.mc-logo-text {
+  font-size: 48px;
+  font-weight: normal;
+  letter-spacing: 2px;
+  text-shadow: 3px 3px 0 var(--mc-text-shadow);
+  color: var(--mc-text);
+  font-family: 'Monocraft', monospace;
+}
+
+.mc-world-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.mc-world-slot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--mc-panel-bg);
+  border: 2px solid var(--mc-panel-border);
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.mc-world-slot:hover {
+  background: var(--mc-hover-bg);
+  border-color: var(--mc-hover-border);
+}
+
+.mc-world-icon {
+  width: 64px;
+  height: 64px;
+  background: #3a3a3a;
+  border: 2px solid var(--mc-panel-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  image-rendering: pixelated;
+}
+
+.mc-world-icon-placeholder {
+  width: 48px;
+  height: 48px;
+  background: 
+    repeating-linear-gradient(45deg, #4a4a4a, #4a4a4a 8px, #5a5a5a 8px, #5a5a5a 16px);
+  border: 1px solid var(--mc-panel-border);
+}
+
+.mc-world-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mc-world-name {
+  font-size: 18px;
+  font-weight: normal;
+  text-shadow: 2px 2px 0 var(--mc-text-shadow);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mc-world-meta {
+  font-size: 14px;
+  color: #aaaaaa;
+  text-shadow: 1px 1px 0 var(--mc-text-shadow);
+}
+
+.mc-button-row {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+}
+
+.mc-button {
+  font-family: 'Monocraft', monospace;
+  font-size: 14px;
+  padding: 8px 16px;
+  background: var(--mc-button-bg);
+  border: none;
+  color: var(--mc-button-text);
+  text-shadow: 2px 2px 0 var(--mc-button-text-shadow);
+  cursor: pointer;
+  position: relative;
+  min-width: 120px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.mc-button::before,
+.mc-button::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.mc-button::before {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: 2px solid var(--mc-button-border-light);
+  border-left: 2px solid var(--mc-button-border-light);
+  border-bottom: 2px solid var(--mc-button-border-dark);
+  border-right: 2px solid var(--mc-button-border-dark);
+}
+
+.mc-button:hover:not(:disabled) {
+  background: #9b9b9b;
+}
+
+.mc-button:active:not(:disabled) {
+  background: #7b7b7b;
+}
+
+.mc-button:active:not(:disabled)::before {
+  border-top: 2px solid var(--mc-button-border-dark);
+  border-left: 2px solid var(--mc-button-border-dark);
+  border-bottom: 2px solid var(--mc-button-border-light);
+  border-right: 2px solid var(--mc-button-border-light);
+}
+
+.mc-button:disabled {
+  background: var(--mc-disabled);
+  color: var(--mc-disabled-text);
+  cursor: not-allowed;
+}
+
+.mc-button:disabled::before {
+  border-top: 2px solid #666;
+  border-left: 2px solid #666;
+  border-bottom: 2px solid #333;
+  border-right: 2px solid #333;
+}
+
+.mc-button-primary {
+  min-width: 200px;
+}
+
+@media (max-width: 600px) {
+  .mc-screen {
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: auto;
+  }
+  
+  .mc-logo {
+    height: 80px;
+  }
+  
+  .mc-logo-text {
+    font-size: 32px;
+  }
+  
+  .mc-world-slot {
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  .mc-world-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .mc-world-icon-placeholder {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .mc-world-name {
+    font-size: 16px;
+  }
+  
+  .mc-world-meta {
+    font-size: 12px;
+  }
+  
+  .mc-button {
+    font-size: 12px;
+    padding: 6px 12px;
+    min-width: 100px;
+    height: 32px;
+  }
+  
+  .mc-button-primary {
+    min-width: 160px;
+  }
+}
