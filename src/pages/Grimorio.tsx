@@ -1,10 +1,21 @@
+import { useState } from 'react';
+import { PROJECTS } from '../data/projects';
+import type { Project } from '../data/projects';
+import { GrimoireBook } from '../components/grimorio/GrimoireBook';
+import { BackButton } from '../components/grimorio/BackButton';
+
 export function Grimorio() {
+  const [selectedProject, setSelectedProject] = useState<Project>(PROJECTS[0]);
+
   return (
-    <div className="mc-screen" style={{ alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ textAlign: 'center', color: '#ffffff', textShadow: '2px 2px 0 #000000' }}>
-        <h1 style={{ fontSize: '32px', marginBottom: '16px', fontWeight: 'normal' }}>Grimorio</h1>
-        <p style={{ fontSize: '18px' }}>próximamente</p>
+    <div className="mc-screen mc-grimorio-screen">
+      <div className="mc-grimorio-container">
+        <GrimoireBook
+          selectedProject={selectedProject}
+          onSelectProject={setSelectedProject}
+        />
       </div>
+      <BackButton />
     </div>
   );
 }

@@ -4,7 +4,7 @@ export function WorldSelect() {
   const navigate = useNavigate();
 
   const handlePlayClick = () => {
-    navigate('/grimorio');
+    navigate('/cargando');
   };
 
   return (
