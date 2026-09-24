@@ -1,492 +1,196 @@
-@font-face {
-  font-family: 'minecraft';
-  src: url('/fonts/minecraft.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+/* ------------------------------------------------------------------ */
+/* Crafting table screen (proyectos)                                   */
+/* ------------------------------------------------------------------ */
 
 .mc-grimorio-screen {
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  user-select: none;
 }
 
-.mc-grimorio-container {
-  width: 100%;
-  height: 100%;
+.mc-crafting-container {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  align-items: flex-start;
   justify-content: center;
-  position: relative;
-  z-index: 2;
+  gap: 0;
+  margin-bottom: 72px;
 }
 
-.mc-grimoire-book {
-  width: 70%;
-  height: 70%;
-  min-width: 800px;
-  min-height: 500px;
-  max-width: 1200px;
-  max-height: 800px;
-  display: flex;
+.mc-panel {
   position: relative;
-  background: #c9b896;
-  background-image: 
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 1px,
-      rgba(0,0,0,0.03) 1px,
-      rgba(0,0,0,0.03) 2px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 1px,
-      rgba(0,0,0,0.02) 1px,
-      rgba(0,0,0,0.02) 2px
-    );
-  background-size: 4px 4px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: calc(256px * var(--gui-scale));
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  box-shadow: 
-    inset -2px 0 0 #a89674,
-    inset 0 -2px 0 #9a8868,
-    8px 8px 0 rgba(0,0,0,0.4);
 }
 
-.mc-book-spine {
+.mc-panel-left {
+  width: calc(195px * var(--gui-scale));
+  height: calc(136px * var(--gui-scale));
+  background-image: url('/gui/container/creative_inventory/tab_item_search.png');
+}
+
+.mc-panel-right {
+  width: calc(176px * var(--gui-scale));
+  height: calc(166px * var(--gui-scale));
+  background-image: url('/gui/container/crafting_table.png');
+}
+
+.mc-search-input {
   position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 8px;
-  margin-left: -4px;
-  background: linear-gradient(90deg, #8b7a5a 0%, #a89674 50%, #8b7a5a 100%);
-  z-index: 10;
-  box-shadow: 
-    inset -1px 0 0 #6b5a3a,
-    inset 1px 0 0 #b8a684;
-}
-
-.mc-grimoire-page {
-  flex: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.mc-grimoire-page.left {
-  border-right: none;
-}
-
-.mc-grimoire-page.right {
-  border-left: none;
-}
-
-.mc-page-content {
-  flex: 1;
-  padding: 32px 24px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  background: 
-    radial-gradient(ellipse at 50% 0%, rgba(0,0,0,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.06) 0%, transparent 40%);
-}
-
-.mc-page-edge {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: linear-gradient(180deg, #8b7a5a 0%, #a89674 50%, #8b7a5a 100%);
-  box-shadow: 
-    inset -1px 0 0 #6b5a3a,
-    inset 1px 0 0 #b8a684;
-}
-
-.mc-page-edge.left {
-  right: -2px;
-  box-shadow: 
-    2px 0 0 rgba(0,0,0,0.15),
-    inset -1px 0 0 #6b5a3a;
-}
-
-.mc-page-edge.right {
-  left: -2px;
-  box-shadow: 
-    -2px 0 0 rgba(0,0,0,0.15),
-    inset 1px 0 0 #b8a684;
-}
-
-.mc-page-title {
-  font-family: 'minecraft', monospace;
-  font-size: 22px;
-  font-weight: normal;
-  color: #2a1a0a;
-  text-shadow: 1px 1px 0 #e8d8b8, 2px 2px 0 #1a0a00;
-  margin-bottom: 20px;
-  text-align: center;
-  letter-spacing: 1px;
-  border-bottom: 2px solid #8b7a5a;
-  padding-bottom: 12px;
-}
-
-.mc-project-list {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.mc-project-items {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  overflow-y: auto;
-  padding-right: 8px;
-}
-
-.mc-project-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  background: transparent;
-  border: 2px solid transparent;
-  color: #2a1a0a;
-  text-shadow: 1px 1px 0 #e8d8b8;
-  font-family: 'minecraft', monospace;
-  font-size: 16px;
-  font-weight: normal;
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
-  transition: none;
-  position: relative;
-}
-
-.mc-project-item::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border: 2px solid transparent;
-  pointer-events: none;
-}
-
-.mc-project-item:hover {
-  background: rgba(0,0,0,0.08);
-  border-color: #8b7a5a;
-}
-
-.mc-project-item:hover::before {
-  border-top-color: #fff8e8;
-  border-left-color: #fff8e8;
-  border-bottom-color: #4a3a1a;
-  border-right-color: #4a3a1a;
-}
-
-.mc-project-item.selected {
-  background: rgba(139, 122, 90, 0.3);
-  border-color: #8b7a5a;
-}
-
-.mc-project-item.selected::before {
-  border-top-color: #fff8e8;
-  border-left-color: #fff8e8;
-  border-bottom-color: #4a3a1a;
-  border-right-color: #4a3a1a;
-}
-
-.mc-project-item:focus {
-  outline: none;
-}
-
-.mc-project-item:focus-visible {
-  border-color: #fff8e8;
-}
-
-.mc-project-icon {
-  font-size: 20px;
-  line-height: 1;
-  flex-shrink: 0;
-  width: 28px;
-  text-align: center;
-  filter: drop-shadow(1px 1px 0 #1a0a00);
-}
-
-.mc-project-name {
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.mc-project-recipe {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding-top: 8px;
-}
-
-.mc-project-icon-large {
-  font-size: 72px;
-  line-height: 1;
-  filter: drop-shadow(3px 3px 0 #1a0a00);
-  margin-bottom: 8px;
-}
-
-.mc-recipe-label {
-  font-family: 'minecraft', monospace;
-  font-size: 16px;
-  font-weight: normal;
-  color: #2a1a0a;
-  text-shadow: 1px 1px 0 #e8d8b8;
-  margin-bottom: 8px;
-}
-
-.mc-crafting-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 52px);
-  grid-template-rows: repeat(3, 52px);
-  gap: 6px;
-  background: rgba(0,0,0,0.15);
-  padding: 8px;
-  border: 2px solid #8b7a5a;
-  box-shadow: 
-    inset -2px -2px 0 #fff8e8,
-    inset 2px 2px 0 #4a3a1a;
-}
-
-.mc-slot {
-  background: #2a1a0a;
+  left: calc(84px * var(--gui-scale));
+  top: calc(5px * var(--gui-scale));
+  width: calc(84px * var(--gui-scale));
+  height: calc(9px * var(--gui-scale));
   border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: 
-    inset -2px -2px 0 #4a3a1a,
-    inset 2px 2px 0 #1a0a00;
-  image-rendering: pixelated;
+  outline: none;
+  background: transparent;
+  color: #e0e0e0;
+  caret-color: #ffffff;
+  font-family: inherit;
+  font-size: calc(8px * var(--gui-scale));
+  line-height: calc(9px * var(--gui-scale));
+  text-shadow: 2px 2px 0 #000000;
 }
 
-.mc-slot-icon {
+.mc-search-input::placeholder {
+  color: #8a8a8a;
+}
+
+.mc-slot-btn {
+  position: absolute;
+  width: calc(18px * var(--gui-scale));
+  height: calc(18px * var(--gui-scale));
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: visible;
   display: flex;
   align-items: center;
   justify-content: center;
+  font: inherit;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+.mc-slot-glyph {
+  width: calc(16px * var(--gui-scale));
+  height: calc(16px * var(--gui-scale));
+  image-rendering: pixelated;
+  pointer-events: none;
+  object-fit: contain;
+}
+
+.mc-slot-hover {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  font-family: 'minecraft', monospace;
-  font-weight: normal;
-  color: #e8d8b8;
-  text-shadow: 1px 1px 0 #1a0a00;
-  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
   image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.mc-slot-btn:hover .mc-slot-hover {
+  opacity: 1;
+}
+
+.mc-slot-highlight-selected {
+  position: absolute;
+  width: calc(24px * var(--gui-scale));
+  height: calc(24px * var(--gui-scale));
+  pointer-events: none;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  animation: mc-slot-blink 1.5s step-end infinite;
+}
+
+@keyframes mc-slot-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.mc-no-results {
+  position: absolute;
+  left: calc(8px * var(--gui-scale));
+  top: calc(80px * var(--gui-scale));
+  width: calc(162px * var(--gui-scale));
+  text-align: center;
+  font-size: calc(9px * var(--gui-scale));
+  color: #b0b0b0;
+  text-shadow: 2px 2px 0 #000000;
 }
 
 .mc-tooltip-trigger {
-  position: relative;
-  display: inline-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
 }
 
 .mc-tooltip {
   position: fixed;
   z-index: 1000;
   pointer-events: none;
-  animation: none;
+  max-width: calc(340px * var(--gui-scale));
+  background: rgba(12, 0, 12, 0.92);
+  border: calc(2px * var(--gui-scale)) solid #000000;
+  box-shadow:
+    inset 0 0 0 calc(1px * var(--gui-scale)) rgba(255, 255, 255, 0.25),
+    0 0 0 calc(1px * var(--gui-scale)) rgba(0, 0, 0, 0.8);
+  padding: calc(4px * var(--gui-scale)) calc(6px * var(--gui-scale));
+  white-space: nowrap;
 }
 
 .mc-tooltip-text {
-  font-family: 'minecraft', monospace;
-  font-size: 14px;
-  font-weight: normal;
-  color: #fff8e8;
-  text-shadow: 1px 1px 0 #000000;
-  background: #2a1a0a;
-  padding: 6px 10px;
-  border: 2px solid #8b7a5a;
-  box-shadow: 
-    -2px -2px 0 #fff8e8,
-    2px 2px 0 #1a0a00;
-  white-space: nowrap;
-  image-rendering: pixelated;
+  font-family: 'minecraft', 'Minecraftia', monospace;
+  font-size: calc(8px * var(--gui-scale));
+  line-height: calc(9px * var(--gui-scale));
+  color: #ffffff;
+  text-shadow: 2px 2px 0 #000000;
+  white-space: pre-line;
 }
 
 .mc-back-button {
-  position: fixed;
-  bottom: 24px;
+  position: absolute;
   left: 24px;
+  bottom: 24px;
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 16px;
-  background: #8b8b8b;
-  border: none;
-  color: #ffffff;
-  text-shadow: 2px 2px 0 #000000;
-  font-family: 'minecraft', monospace;
-  font-size: 14px;
-  font-weight: normal;
+  border: 2px solid #000000;
+  background: rgba(0, 0, 0, 0.55);
   cursor: pointer;
-  z-index: 100;
-  position: relative;
-  min-width: auto;
-  height: auto;
-  white-space: nowrap;
-}
-
-.mc-back-button::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-top: 2px solid #ffffff;
-  border-left: 2px solid #ffffff;
-  border-bottom: 2px solid #4a4a4a;
-  border-right: 2px solid #4a4a4a;
-  pointer-events: none;
-}
-
-.mc-back-button:hover {
-  background: #9b9b9b;
-}
-
-.mc-back-button:active {
-  background: #7b7b7b;
-}
-
-.mc-back-button:active::before {
-  border-top: 2px solid #4a4a4a;
-  border-left: 2px solid #4a4a4a;
-  border-bottom: 2px solid #ffffff;
-  border-right: 2px solid #ffffff;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 18px;
+  text-shadow: 2px 2px 0 #000000;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 .mc-back-icon {
-  font-size: 16px;
-  line-height: 1;
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  object-fit: contain;
 }
 
-@media (max-width: 1024px) {
-  .mc-grimoire-book {
-    width: 85%;
-    height: 85%;
-    min-width: 600px;
-    min-height: 400px;
-  }
-  
-  .mc-page-content {
-    padding: 24px 16px;
-  }
-  
-  .mc-page-title {
-    font-size: 18px;
-  }
-  
-  .mc-project-item {
-    font-size: 14px;
-    padding: 8px 10px;
-  }
-  
-  .mc-project-icon-large {
-    font-size: 56px;
-  }
-  
-  .mc-crafting-grid {
-    grid-template-columns: repeat(3, 44px);
-    grid-template-rows: repeat(3, 44px);
-    gap: 4px;
-  }
-  
-  .mc-slot {
-    width: 44px;
-    height: 44px;
-  }
-  
-  .mc-back-button {
-    bottom: 16px;
-    left: 16px;
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 768px) {
-  .mc-grimorio-screen {
-    padding: 12px;
-  }
-  
-  .mc-grimoire-book {
-    width: 95%;
-    height: 90%;
-    min-width: 0;
-    min-height: 0;
-    flex-direction: column;
-  }
-  
-  .mc-book-spine {
-    width: 100%;
-    height: 8px;
-    left: 0;
-    top: 50%;
-    margin-left: 0;
-    margin-top: -4px;
-    background: linear-gradient(180deg, #8b7a5a 0%, #a89674 50%, #8b7a5a 100%);
-  }
-  
-  .mc-grimoire-page {
-    min-height: 0;
-  }
-  
-  .mc-page-edge.left {
-    right: auto;
-    bottom: -2px;
-    left: 0;
-    top: auto;
-    width: 100%;
-    height: 4px;
-  }
-  
-  .mc-page-edge.right {
-    left: auto;
-    top: -2px;
-    right: 0;
-    bottom: auto;
-    width: 100%;
-    height: 4px;
-  }
-  
-  .mc-page-content {
-    padding: 16px 12px;
-  }
-  
-  .mc-project-icon-large {
-    font-size: 48px;
-    margin-bottom: 4px;
-  }
-  
-  .mc-crafting-grid {
-    grid-template-columns: repeat(3, 38px);
-    grid-template-rows: repeat(3, 38px);
-    gap: 3px;
-    padding: 6px;
-  }
-  
-  .mc-slot {
-    width: 38px;
-    height: 38px;
-  }
-  
-  .mc-back-button {
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
-    justify-content: center;
-  }
+.mc-back-button:hover {
+  background: rgba(0, 0, 0, 0.85);
 }

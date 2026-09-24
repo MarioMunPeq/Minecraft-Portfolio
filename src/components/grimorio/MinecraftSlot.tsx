@@ -1,22 +1,12 @@
-import { MinecraftTooltip } from './MinecraftTooltip';
 import { TECH_ICONS } from '../../data/projects';
+import { IconImage } from './IconImage';
 
 interface MinecraftSlotProps {
   technology: string;
-  size?: number;
 }
 
-export function MinecraftSlot({ technology, size = 48 }: MinecraftSlotProps) {
-  const icon = TECH_ICONS[technology] || '?';
+export function MinecraftSlot({ technology }: MinecraftSlotProps) {
+  const icon = TECH_ICONS[technology] ?? 'unknown';
 
-  return (
-    <MinecraftTooltip text={technology}>
-      <div
-        className="mc-slot"
-        style={{ width: size, height: size }}
-      >
-        <span className="mc-slot-icon" style={{ fontSize: size * 0.5 }}>{icon}</span>
-      </div>
-    </MinecraftTooltip>
-  );
+  return <IconImage name={icon} className="mc-slot-glyph" />;
 }

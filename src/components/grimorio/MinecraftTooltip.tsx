@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 interface MinecraftTooltipProps {
   children: React.ReactNode;
@@ -8,8 +8,6 @@ interface MinecraftTooltipProps {
 export function MinecraftTooltip({ children, text }: MinecraftTooltipProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const childRef = useRef<HTMLElement>(null);
-  const tooltipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -27,7 +25,6 @@ export function MinecraftTooltip({ children, text }: MinecraftTooltipProps) {
 
   return (
     <span
-      ref={childRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className="mc-tooltip-trigger"
@@ -35,7 +32,6 @@ export function MinecraftTooltip({ children, text }: MinecraftTooltipProps) {
       {children}
       {isHovered && (
         <div
-          ref={tooltipRef}
           className="mc-tooltip"
           style={{
             left: position.x + 16,

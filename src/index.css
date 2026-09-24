@@ -1,4 +1,5 @@
 @import './components/grimorio/grimorio.css';
+@import './components/timeline/timeline.css';
 
 @font-face {
   font-family: 'minecraft';
@@ -10,19 +11,13 @@
 
 :root {
   --mc-bg: #1a1a1a;
-  --mc-panel-bg: #2a2a2a;
-  --mc-panel-border: #555555;
-  --mc-button-bg: #8b8b8b;
-  --mc-button-border-light: #ffffff;
-  --mc-button-border-dark: #4a4a4a;
-  --mc-button-text: #ffffff;
-  --mc-button-text-shadow: #000000;
-  --mc-hover-bg: #3a3a3a;
-  --mc-hover-border: #ffffff;
   --mc-text: #ffffff;
   --mc-text-shadow: #000000;
-  --mc-disabled: #555555;
-  --mc-disabled-text: #888888;
+  --gui-scale: 4;
+
+  --ws-bg: #2b2b2b;
+  --ws-shadow: #000000;
+  --ws-w: clamp(540px, 58vw, 1180px);
 }
 
 * {
@@ -31,7 +26,9 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -53,6 +50,7 @@ html, body, #root {
   position: relative;
 }
 
+/* Base screen used by other screens (grimorio). */
 .mc-screen {
   width: 100%;
   height: 100%;
@@ -62,236 +60,313 @@ html, body, #root {
   background: var(--mc-bg);
 }
 
-.mc-screen::before {
-  content: '';
+/* ------------------------------------------------------------------ */
+/* World Select screen                                                 */
+/* ------------------------------------------------------------------ */
+
+.ws-screen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--ws-bg);
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Minecraft panorama background (the "video" of the MC menu)          */
+/* A 3D cube of the 6 real panorama faces, slowly rotating, strongly   */
+/* blurred + dimmed, just like the Minecraft world-select backdrop     */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --ws-pan-s: 140vmax;
+  --ws-pan-fov: 300vmax;
+}
+
+.ws-pan {
   position: absolute;
   inset: 0;
-  background-image: 
-    radial-gradient(circle at 20% 20%, #2a2a2a 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, #1f1f1f 0%, transparent 50%),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.1) 2px,
-      rgba(0,0,0,0.1) 4px
-    );
-  pointer-events: none;
+  z-index: 0;
+  perspective: var(--ws-pan-fov);
+  filter: blur(24px) brightness(0.55) saturate(0.85);
+}
+
+.ws-pan-cube {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--ws-pan-s);
+  height: var(--ws-pan-s);
+  margin-left: calc(var(--ws-pan-s) / -2);
+  margin-top: calc(var(--ws-pan-s) / -2);
+  transform-style: preserve-3d;
+  animation: ws-pan-spin 120s linear infinite;
+}
+
+.ws-pan-face {
+  position: absolute;
+  inset: 0;
+  background-size: 100% 100%;
+  background-position: center;
+  backface-visibility: hidden;
+}
+
+.ws-pan-face-front {
+  transform: translateZ(calc(var(--ws-pan-s) / 2));
+}
+
+.ws-pan-face-back {
+  transform: rotateY(180deg) translateZ(calc(var(--ws-pan-s) / 2));
+}
+
+.ws-pan-face-right {
+  transform: rotateY(90deg) translateZ(calc(var(--ws-pan-s) / 2));
+}
+
+.ws-pan-face-left {
+  transform: rotateY(-90deg) translateZ(calc(var(--ws-pan-s) / 2));
+}
+
+.ws-pan-face-top {
+  transform: rotateX(90deg) translateZ(calc(var(--ws-pan-s) / 2));
+}
+
+.ws-pan-face-bottom {
+  transform: rotateX(-90deg) translateZ(calc(var(--ws-pan-s) / 2));
+}
+
+@keyframes ws-pan-spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+.ws-dim {
+  position: absolute;
+  inset: 0;
   z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 78%, rgba(0, 0, 0, 0.6) 100%),
+    rgba(0, 0, 0, 0.28);
 }
 
-.mc-logo {
-  width: 100%;
-  height: 120px;
-  background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
-  border-bottom: 2px solid var(--mc-panel-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.ws-column {
   position: relative;
   z-index: 2;
-}
-
-.mc-logo-text {
-  font-size: 48px;
-  font-weight: normal;
-  letter-spacing: 2px;
-  text-shadow: 3px 3px 0 var(--mc-text-shadow);
-  color: var(--mc-text);
-  font-family: 'minecraft', monospace;
-}
-
-.mc-world-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  position: relative;
-  z-index: 2;
-}
-
-.mc-world-slot {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  background: var(--mc-panel-bg);
-  border: 2px solid var(--mc-panel-border);
-  cursor: pointer;
-  transition: background 0.1s, border-color 0.1s;
-  width: 100%;
-  max-width: 600px;
+  width: var(--ws-w);
   margin: 0 auto;
-}
-
-.mc-world-slot:hover {
-  background: var(--mc-hover-bg);
-  border-color: var(--mc-hover-border);
-}
-
-.mc-world-icon {
-  width: 64px;
-  height: 64px;
-  background: #3a3a3a;
-  border: 2px solid var(--mc-panel-border);
+  flex: 1 1 0;
+  min-height: 0;
+  padding-top: 5vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  image-rendering: pixelated;
+  flex-direction: column;
+  align-items: stretch;
 }
 
-.mc-world-icon-placeholder {
+.ws-title {
+  text-align: center;
+  font-size: 54px;
+  color: #ffffff;
+  text-shadow: 2px 2px 0 var(--ws-shadow);
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+
+.ws-separator {
+  width: 100%;
+  height: 8px;
+  flex: none;
+  background-repeat: repeat-x;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.ws-separator-header {
+  background-image: url('/gui/header_separator.png');
+  background-size: 128px 8px;
+}
+
+.ws-separator-footer {
+  background-image: url('/gui/footer_separator.png');
+  background-size: 128px 8px;
+}
+
+.ws-search {
+  position: relative;
+  width: 100%;
+  margin-top: 28px;
+  flex: none;
+}
+
+.ws-search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 48px;
   height: 48px;
-  background: 
-    repeating-linear-gradient(45deg, #4a4a4a, #4a4a4a 8px, #5a5a5a 8px, #5a5a5a 16px);
-  border: 1px solid var(--mc-panel-border);
+  z-index: 1;
+  pointer-events: none;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
-.mc-world-info {
-  flex: 1;
+.ws-search-input {
+  width: 100%;
+  height: 80px;
+  padding: 0 20px 0 84px;
+  border: none;
+  outline: none;
+  background: url('/gui/sprites/widget/text_field.png') no-repeat center / 100% 100%;
+  background-size: 100% 100%;
+  color: #ffffff;
+  caret-color: #ffffff;
+  font-family: inherit;
+  font-size: 26px;
+  text-shadow: 2px 2px 0 var(--ws-shadow);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.ws-search-input::placeholder {
+  color: #7a7a7a;
+}
+
+.ws-list {
+  width: 100%;
+  margin-top: 24px;
+  flex: none;
+  padding: 8px;
+  background-image: url('/gui/menu_list_background.png');
+  background-repeat: repeat;
+  background-size: 64px 64px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.ws-entry {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.ws-entry-highlight {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.08s;
+  border: 16px solid transparent;
+  border-image: url('/gui/sprites/container/slot_highlight_back.png') 4 fill / 16px stretch;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.ws-entry:hover .ws-entry-highlight {
+  opacity: 1;
+}
+
+.ws-entry-icon {
+  width: 256px;
+  height: 256px;
+  flex-shrink: 0;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.ws-entry-info {
+  position: relative;
+  z-index: 2;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 10px;
 }
 
-.mc-world-name {
-  font-size: 18px;
-  font-weight: normal;
-  text-shadow: 2px 2px 0 var(--mc-text-shadow);
+.ws-entry-name {
+  font-size: 40px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 2px 2px 0 var(--ws-shadow);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.mc-world-meta {
-  font-size: 14px;
-  color: #aaaaaa;
-  text-shadow: 1px 1px 0 var(--mc-text-shadow);
+.ws-entry-meta {
+  font-size: 24px;
+  color: #a5a5a5;
+  text-shadow: 2px 2px 0 var(--ws-shadow);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.mc-button-row {
-  display: flex;
-  gap: 8px;
-  padding: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
+.ws-buttons {
   position: relative;
   z-index: 2;
+  width: var(--ws-w);
+  margin: 0 auto;
+  padding-top: 40px;
+  padding-bottom: 36px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.mc-button {
-  font-family: 'minecraft', monospace;
-  font-size: 14px;
-  padding: 8px 16px;
-  background: var(--mc-button-bg);
+.ws-buttons-row {
+  display: flex;
+  gap: 8px;
+}
+
+.ws-button {
+  flex: 1;
+  height: 80px;
+  padding: 0 12px;
   border: none;
-  color: var(--mc-button-text);
-  text-shadow: 2px 2px 0 var(--mc-button-text-shadow);
+  background: url('/gui/sprites/widget/button.png') no-repeat center / 100% 100%;
+  color: #ffffff;
   cursor: pointer;
-  position: relative;
-  min-width: 120px;
-  height: 36px;
+  font-family: inherit;
+  font-size: 28px;
+  text-shadow: 2px 2px 0 var(--ws-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
-.mc-button::before,
-.mc-button::after {
-  content: '';
-  position: absolute;
-  pointer-events: none;
+.ws-button-play:hover {
+  background-image: url('/gui/sprites/widget/button_highlighted.png');
 }
 
-.mc-button::before {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-top: 2px solid var(--mc-button-border-light);
-  border-left: 2px solid var(--mc-button-border-light);
-  border-bottom: 2px solid var(--mc-button-border-dark);
-  border-right: 2px solid var(--mc-button-border-dark);
+.ws-button-timeline:hover {
+  background-image: url('/gui/sprites/widget/button_highlighted.png');
 }
 
-.mc-button:hover:not(:disabled) {
-  background: #9b9b9b;
+.ws-button-inert {
+  background-image: url('/gui/sprites/widget/button_disabled.png');
+  cursor: default;
 }
 
-.mc-button:active:not(:disabled) {
-  background: #7b7b7b;
-}
-
-.mc-button:active:not(:disabled)::before {
-  border-top: 2px solid var(--mc-button-border-dark);
-  border-left: 2px solid var(--mc-button-border-dark);
-  border-bottom: 2px solid var(--mc-button-border-light);
-  border-right: 2px solid var(--mc-button-border-light);
-}
-
-.mc-button:disabled {
-  background: var(--mc-disabled);
-  color: var(--mc-disabled-text);
-  cursor: not-allowed;
-}
-
-.mc-button:disabled::before {
-  border-top: 2px solid #666;
-  border-left: 2px solid #666;
-  border-bottom: 2px solid #333;
-  border-right: 2px solid #333;
-}
-
-.mc-button-primary {
-  min-width: 200px;
-}
-
-@media (max-width: 600px) {
-  .mc-logo {
-    height: 80px;
-  }
-  
-  .mc-logo-text {
-    font-size: 32px;
-  }
-  
-  .mc-world-slot {
-    padding: 10px;
-    gap: 10px;
-  }
-  
-  .mc-world-icon {
-    width: 48px;
-    height: 48px;
-  }
-  
-  .mc-world-icon-placeholder {
-    width: 36px;
-    height: 36px;
-  }
-  
-  .mc-world-name {
-    font-size: 16px;
-  }
-  
-  .mc-world-meta {
-    font-size: 12px;
-  }
-  
-  .mc-button {
-    font-size: 12px;
-    padding: 6px 12px;
-    min-width: 100px;
-    height: 32px;
-  }
-  
-  .mc-button-primary {
-    min-width: 160px;
-  }
-}
+/* ------------------------------------------------------------------ */
+/* Loading screen                                                      */
+/* ------------------------------------------------------------------ */
 
 .mc-loading-screen {
   position: fixed;
@@ -299,7 +374,7 @@ html, body, #root {
   width: 100vw;
   height: 100vh;
   background-color: #5d4037;
-  background-image: 
+  background-image:
     repeating-linear-gradient(
       0deg,
       #4a3228 0px,
@@ -350,7 +425,7 @@ html, body, #root {
   font-family: 'minecraft', 'Minecraftia', monospace;
   font-size: 24px;
   color: #e0e0e0;
-  text-shadow: 
+  text-shadow:
     2px 2px 0 #000000,
     3px 3px 0 #000000,
     1px 1px 0 #000000;
@@ -360,8 +435,81 @@ html, body, #root {
   user-select: none;
 }
 
-@media (max-width: 600px) {
-  .mc-loading-text {
+/* ------------------------------------------------------------------ */
+/* Responsive (integer downscale: x3 instead of x4)                    */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 760px) {
+  :root {
+    --ws-w: 92vw;
+    --gui-scale: 2;
+  }
+
+  .ws-title {
+    font-size: 40px;
+  }
+
+  .ws-column {
+    padding-top: 3vh;
+  }
+
+  .ws-separator {
+    height: 6px;
+  }
+
+  .ws-separator-header {
+    background-size: 96px 6px;
+  }
+
+  .ws-separator-footer {
+    background-size: 96px 6px;
+  }
+
+  .ws-search-icon {
+    width: 36px;
+    height: 36px;
+    left: 14px;
+  }
+
+  .ws-search-input {
+    height: 60px;
+    padding-left: 60px;
+    font-size: 20px;
+  }
+
+  .ws-list {
+    background-size: 48px 48px;
+  }
+
+  .ws-entry {
+    gap: 14px;
+    padding: 8px;
+  }
+
+  .ws-entry-highlight {
+    border-width: 12px;
+  }
+
+  .ws-entry-icon {
+    width: 192px;
+    height: 192px;
+  }
+
+  .ws-entry-name {
+    font-size: 28px;
+  }
+
+  .ws-entry-meta {
     font-size: 18px;
+  }
+
+  .ws-buttons {
+    padding-bottom: 24px;
+  }
+
+  .ws-button {
+    height: 60px;
+    font-size: 20px;
+    padding: 0 6px;
   }
 }
