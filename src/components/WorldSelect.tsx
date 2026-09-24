@@ -1,17 +1,12 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAudio } from '../audio/AudioContext';
+import { Panorama3D } from './Panorama3D';
 
 const WORLD_NAME = 'Portfolio de Mario Muñoz';
+const BASE = import.meta.env.BASE_URL;
 
-const PANORAMA_FACES = [
-  { side: 'back', src: '/gui/title/background/panorama_4.png' },
-  { side: 'right', src: '/gui/title/background/panorama_3.png' },
-  { side: 'front', src: '/gui/title/background/panorama_2.png' },
-  { side: 'left', src: '/gui/title/background/panorama_1.png' },
-  { side: 'top', src: '/gui/title/background/panorama_0.png' },
-  { side: 'bottom', src: '/gui/title/background/panorama_5.png' },
-];
+const OVERLAY_SRC = `${BASE}gui/title/background/panorama_overlay.png`;
 
 function formatDate(date: Date): string {
   const dd = String(date.getDate()).padStart(2, '0');
@@ -39,25 +34,15 @@ export function WorldSelect() {
 
   return (
     <div className="ws-screen">
-      <div className="ws-pan">
-        <div className="ws-pan-cube">
-          {PANORAMA_FACES.map((face) => (
-            <div
-              key={face.side}
-              className={`ws-pan-face ws-pan-face-${face.side}`}
-              style={{ backgroundImage: `url(${face.src})` }}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="ws-dim" />
+      <Panorama3D />
+      <img className="ws-pan-overlay" src={OVERLAY_SRC} alt="" />
 
       <div className="ws-column">
         <h1 className="ws-title">Select World</h1>
         <div className="ws-separator ws-separator-header" />
 
         <div className="ws-search">
-          <img className="ws-search-icon" src="/gui/sprites/icon/search.png" alt="" />
+          <img className="ws-search-icon" src={`${BASE}gui/sprites/icon/search.png`} alt="" />
           <input
             className="ws-search-input"
             type="text"
@@ -71,7 +56,7 @@ export function WorldSelect() {
             <div className="ws-entry-highlight" />
             <img
               className="ws-entry-icon"
-              src="/gui/realms/new_world.png"
+              src={`${BASE}gui/realms/new_world.png`}
               alt={WORLD_NAME}
             />
             <div className="ws-entry-info">

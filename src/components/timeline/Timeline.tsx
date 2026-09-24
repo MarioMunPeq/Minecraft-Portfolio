@@ -142,12 +142,12 @@ export function Timeline() {
     const prev = tab.nodes[i - 1];
     const sx = prev.x + 13;
     const sy = prev.y;
-    const mx = (prev.x + node.x) / 2;
     const ex = node.x - 13;
+    const ey = node.y;
     return (
       <path
         key={`${tab.id}-${node.id}`}
-        d={`M ${sx} ${sy} L ${mx} ${sy} L ${mx} ${node.y} L ${ex} ${node.y}`}
+        d={`M ${sx} ${sy} L ${ex} ${sy} L ${ex} ${ey}`}
         fill="none"
         stroke="#c6c6c6"
         strokeWidth={2}
@@ -230,6 +230,8 @@ export function Timeline() {
               </div>
             </div>
           </div>
+
+          <div className="tl-frame" aria-hidden="true" />
         </div>
       </div>
       <AdvancementToast payload={toast} onDone={() => setToast(null)} />

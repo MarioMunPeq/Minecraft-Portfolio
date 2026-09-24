@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Project } from '../../data/projects';
 import { INVENTORY_STACK } from '../../data/projects';
 import { MinecraftSlot } from './MinecraftSlot';
@@ -5,6 +6,7 @@ import { MinecraftTooltip } from './MinecraftTooltip';
 import { IconImage } from './IconImage';
 import { useAudio } from '../../audio/AudioContext';
 import { guiUrl } from './guiUrl';
+import { BookModal } from './BookModal';
 
 interface ProjectRecipeProps {
   project: Project;
@@ -21,10 +23,12 @@ function slotPos(col: number, row: number): React.CSSProperties {
 
 export function ProjectRecipe({ project }: ProjectRecipeProps) {
   const { playClick, playLevelup } = useAudio();
+  const [isBookOpen, setIsBookOpen] = useState(false);
 
   const handleResultClick = () => {
     playClick();
     playLevelup();
+    setIsBookOpen(true);
   };
 
   return (
@@ -50,11 +54,8 @@ export function ProjectRecipe({ project }: ProjectRecipeProps) {
         </div>
       ))}
 
-      <a
+      <button
         className="mc-slot-btn mc-result-slot"
-        href={project.url}
-        target="_blank"
-        rel="noreferrer"
         aria-label={project.name}
         onClick={handleResultClick}
       >
@@ -67,7 +68,7 @@ export function ProjectRecipe({ project }: ProjectRecipeProps) {
         <MinecraftTooltip text={`${project.name}\n${project.description}`}>
           <IconImage name={project.icon} className="mc-slot-glyph" />
         </MinecraftTooltip>
-      </a>
+      </button>
 
       {INVENTORY_STACK.map((technology, index) => {
         const col = index % 9;
@@ -90,6 +91,8 @@ export function ProjectRecipe({ project }: ProjectRecipeProps) {
           </div>
         );
       })}
+
+      <BookModal project={project} isOpen={isBookOpen} onClose={() => setIsBookOpen(false)} />
     </div>
   );
 }

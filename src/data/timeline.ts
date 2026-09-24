@@ -25,11 +25,12 @@ export interface TimelineTab {
   nodes: TimelineNode[];
 }
 
-const SPACING = 36;
+const SPACING = 28;
 const PAD_X = 28;
 const ROW_TOP = 52;
 const ROW_BOTTOM = 86;
 const CANVAS_H = 140;
+const VIEWPORT_W = 234;
 
 function layout(count: number): { x: number; y: number }[] {
   return Array.from({ length: count }, (_, i) => ({
@@ -39,7 +40,8 @@ function layout(count: number): { x: number; y: number }[] {
 }
 
 function canvasW(count: number): number {
-  return (count - 1) * SPACING + PAD_X * 2;
+  const w = (count - 1) * SPACING + PAD_X * 2;
+  return Math.max(w, VIEWPORT_W);
 }
 
 const FLAGSHIP = new Set(['persona5', 'vault', 'dungeon']);

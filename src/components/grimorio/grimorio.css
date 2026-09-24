@@ -194,3 +194,147 @@
 .mc-back-button:hover {
   background: rgba(0, 0, 0, 0.85);
 }
+
+/* ------------------------------------------------------------------ */
+/* Written Book Modal                                                  */
+/* ------------------------------------------------------------------ */
+
+.mc-book-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(2px);
+  animation: mc-book-fade-in 0.15s ease-out;
+}
+
+@keyframes mc-book-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mc-book-modal {
+  position: relative;
+  width: calc(256px * var(--gui-scale));
+  height: calc(256px * var(--gui-scale));
+  background-image: url('/gui/book.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  display: flex;
+  flex-direction: column;
+  animation: mc-book-pop-in 0.2s ease-out;
+}
+
+@keyframes mc-book-pop-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.mc-book-close-btn {
+  position: absolute;
+  top: calc(8px * var(--gui-scale));
+  right: calc(8px * var(--gui-scale));
+  width: calc(16px * var(--gui-scale));
+  height: calc(16px * var(--gui-scale));
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.1s;
+  z-index: 10;
+}
+
+.mc-book-close-btn:hover {
+  opacity: 1;
+}
+
+.mc-book-close-icon {
+  width: calc(16px * var(--gui-scale));
+  height: calc(16px * var(--gui-scale));
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.mc-book-page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(40px * var(--gui-scale)) calc(28px * var(--gui-scale)) calc(28px * var(--gui-scale));
+  pointer-events: none;
+}
+
+.mc-book-content {
+  pointer-events: auto;
+  width: 100%;
+  text-align: center;
+}
+
+.mc-book-title {
+  font-family: 'minecraft', 'Minecraftia', monospace;
+  font-size: calc(14px * var(--gui-scale));
+  line-height: calc(16px * var(--gui-scale));
+  color: #1a0d00;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3);
+  margin: 0 0 calc(12px * var(--gui-scale));
+  font-weight: normal;
+  letter-spacing: 0.5px;
+}
+
+.mc-book-description {
+  font-family: 'minecraft', 'Minecraftia', monospace;
+  font-size: calc(10px * var(--gui-scale));
+  line-height: calc(14px * var(--gui-scale));
+  color: #2a1808;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.2);
+  margin: 0 0 calc(20px * var(--gui-scale));
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.mc-book-visit-btn {
+  display: inline-block;
+  padding: calc(6px * var(--gui-scale)) calc(16px * var(--gui-scale));
+  border: calc(1px * var(--gui-scale)) solid #3a2008;
+  background: linear-gradient(180deg, #5a3008 0%, #3a1808 100%);
+  color: #e8d0a8;
+  font-family: 'minecraft', 'Minecraftia', monospace;
+  font-size: calc(10px * var(--gui-scale));
+  line-height: calc(12px * var(--gui-scale));
+  text-decoration: none;
+  text-shadow: 1px 1px 0 #000000;
+  cursor: pointer;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+
+.mc-book-visit-btn:hover {
+  background: linear-gradient(180deg, #6a3808 0%, #4a2008 100%);
+  color: #fff8e0;
+  border-color: #4a2808;
+}
+
+.mc-book-visit-btn:active {
+  background: linear-gradient(180deg, #4a2408 0%, #2a1008 100%);
+}

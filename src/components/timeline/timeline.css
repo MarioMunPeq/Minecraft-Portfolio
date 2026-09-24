@@ -18,17 +18,36 @@
   position: relative;
   width: calc(252px * var(--gui-scale));
   height: calc(140px * var(--gui-scale));
-  background-image: url('/gui/advancements/window.png');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
 }
 
 .tl-tabs {
   position: absolute;
   inset: 0;
-  z-index: 5;
+  z-index: 15;
+}
+
+.tl-viewport {
+  position: absolute;
+  left: calc(9px * var(--gui-scale));
+  top: calc(12px * var(--gui-scale));
+  width: calc(234px * var(--gui-scale));
+  height: calc(118px * var(--gui-scale));
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+  z-index: 1;
+}
+
+.tl-frame {
+  position: absolute;
+  inset: 0;
+  background-image: url('/gui/advancements/window.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  z-index: 10;
+  pointer-events: none;
 }
 
 .tl-tab {
