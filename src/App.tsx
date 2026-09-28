@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { WorldSelect } from './components/WorldSelect';
 import { WorldLoadingScreen } from './components/WorldLoadingScreen';
-import { Grimorio } from './pages/Grimorio';
+import { CraftingTable } from './pages/CraftingTable';
 import { Timeline } from './components/timeline/Timeline';
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<WorldSelect />} />
         <Route path="/cargando" element={<WorldLoadingScreen />} />
-        <Route path="/grimorio" element={<Grimorio />} />
+        <Route path="/crafting-table" element={<CraftingTable />} />
         <Route path="/timeline" element={<Timeline />} />
       </Routes>
     </BrowserRouter>

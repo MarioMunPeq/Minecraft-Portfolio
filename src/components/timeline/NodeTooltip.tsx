@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 
 interface NodeTooltipProps {
@@ -6,32 +6,35 @@ interface NodeTooltipProps {
   description: string;
   x: number;
   y: number;
+  canvasWidth: number;
+  canvasHeight: number;
   children: ReactNode;
 }
 
-export function NodeTooltip({ title, description, x, y, children }: NodeTooltipProps) {
+export function NodeTooltip({
+  title,
+  description,
+  x,
+  y,
+  canvasWidth,
+  canvasHeight,
+  children,
+}: NodeTooltipProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    if (!isHovered) return;
-    const handleMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [isHovered]);
 
   return (
     <span
       className="tl-node-trigger"
-      style={{ left: x, top: y }}
+      style={{
+        left: `${(x / canvasWidth) * 100}%`,
+        top: `${(y / canvasHeight) * 100}%`,
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {children}
       {isHovered && (
-        <div className="tl-tooltip" style={{ left: position.x + 16, top: position.y - 8 }}>
+        <div className="tl-tooltip">
           <span className="tl-tooltip-frame" />
           <span className="tl-tooltip-body">
             <span className="tl-tooltip-title">{title}</span>

@@ -39,7 +39,6 @@ export function WorldSelect() {
 
       <div className="ws-column">
         <h1 className="ws-title">Select World</h1>
-        <div className="ws-separator ws-separator-header" />
 
         <div className="ws-search">
           <img className="ws-search-icon" src={`${BASE}gui/sprites/icon/search.png`} alt="" />
@@ -69,31 +68,29 @@ export function WorldSelect() {
           </div>
         </div>
 
-        <div className="ws-separator ws-separator-footer" />
-      </div>
-
-      <div className="ws-buttons">
-        <div className="ws-buttons-row">
-          <button type="button" className="ws-button ws-button-play" onClick={handlePlayClick}>
-            Play Selected World
-          </button>
-          <button type="button" className="ws-button ws-button-inert">
-            Create New World
-          </button>
-        </div>
-        <div className="ws-buttons-row">
-          <button type="button" className="ws-button ws-button-inert">
-            Edit
-          </button>
-          <button type="button" className="ws-button ws-button-inert">
-            Delete
-          </button>
-          <button type="button" className="ws-button ws-button-timeline" onClick={handleTimelineClick}>
-            Timeline
-          </button>
-          <button type="button" className="ws-button ws-button-inert">
-            Back
-          </button>
+        <div className="ws-buttons">
+          <div className="ws-buttons-row">
+            <button type="button" className="ws-button ws-button-play" onClick={handlePlayClick}>
+              Play Selected World
+            </button>
+            <button type="button" className="ws-button ws-button-inert">
+              Create New World
+            </button>
+          </div>
+          <div className="ws-buttons-row">
+            <button type="button" className="ws-button ws-button-inert">
+              Edit
+            </button>
+            <button type="button" className="ws-button ws-button-inert">
+              Delete
+            </button>
+            <button type="button" className="ws-button ws-button-timeline" onClick={handleTimelineClick}>
+              Timeline
+            </button>
+            <button type="button" className="ws-button ws-button-inert">
+              Back
+            </button>
+          </div>
         </div>
       </div>
     </div>

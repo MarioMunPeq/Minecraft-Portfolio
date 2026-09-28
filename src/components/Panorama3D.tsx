@@ -3,14 +3,17 @@ import * as THREE from 'three';
 
 const BASE = import.meta.env.BASE_URL;
 
+// BoxGeometry material order: [+X, -X, +Y, -Y, +Z, -Z].
+// Applied UV rotations: +X=0deg, -X=0deg, +Y=0deg, -Y=0deg, +Z=0deg, -Z=0deg.
+// Adjust only the +Y/-Y entries to 90deg, 180deg, or 270deg if their seams need it.
 const PANORAMA_FACES = [
-  `${BASE}gui/title/background/panorama_3.png`,
-  `${BASE}gui/title/background/panorama_1.png`,
-  `${BASE}gui/title/background/panorama_0.png`,
-  `${BASE}gui/title/background/panorama_5.png`,
-  `${BASE}gui/title/background/panorama_2.png`,
-  `${BASE}gui/title/background/panorama_4.png`,
-];
+  { src: `${BASE}gui/title/background/panorama_0.png`, rotationDegrees: 0 },
+  { src: `${BASE}gui/title/background/panorama_1.png`, rotationDegrees: 0 },
+  { src: `${BASE}gui/title/background/panorama_2.png`, rotationDegrees: 0 },
+  { src: `${BASE}gui/title/background/panorama_3.png`, rotationDegrees: 0 },
+  { src: `${BASE}gui/title/background/panorama_4.png`, rotationDegrees: 0 },
+  { src: `${BASE}gui/title/background/panorama_5.png`, rotationDegrees: 0 },
+] as const;
 
 const ROTATION_SPEED = 0.02;
 
@@ -39,8 +42,12 @@ export function Panorama3D() {
     const geometry = new THREE.BoxGeometry(10, 10, 10);
 
     const loader = new THREE.TextureLoader();
-    const materials = PANORAMA_FACES.map((src) => {
+    const materials = PANORAMA_FACES.map(({ src, rotationDegrees }) => {
       const texture = loader.load(src);
+      texture.flipY = false;
+      texture.wrapS = THREE.ClampToEdgeWrapping;
+      texture.wrapT = THREE.ClampToEdgeWrapping;
+      texture.rotation = THREE.MathUtils.degToRad(rotationDegrees);
       texture.magFilter = THREE.NearestFilter;
       texture.minFilter = THREE.NearestFilter;
       texture.colorSpace = THREE.SRGBColorSpace;

@@ -7,7 +7,7 @@ export function WorldLoadingScreen() {
   useEffect(() => {
     const duration = 1500 + Math.random() * 1000;
     const timer = setTimeout(() => {
-      navigate('/grimorio');
+      navigate('/crafting-table');
     }, duration);
 
     return () => clearTimeout(timer);

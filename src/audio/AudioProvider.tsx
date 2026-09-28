@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { AudioContext } from './AudioContext';
 import type { AudioApi } from './AudioContext';
 import { getAudioMuted, setAudioMuted, playSound, MENU_MUSIC } from './audio';
-import { IconImage } from '../components/grimorio/IconImage';
+import { IconImage } from '../components/crafting-table/IconImage';
 
 export function AudioProvider({ children }: { children: ReactNode }) {
   const [muted, setMuted] = useState(() => getAudioMuted());

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { playSound } from '../../audio/audio';
-import { IconImage } from '../grimorio/IconImage';
+import { IconImage } from '../crafting-table/IconImage';
 
 export interface ToastPayload {
   icon: string;

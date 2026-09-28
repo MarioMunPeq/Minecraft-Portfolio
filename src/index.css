@@ -1,12 +1,12 @@
-@import './components/grimorio/grimorio.css';
+@import './components/crafting-table/crafting-table.css';
 @import './components/timeline/timeline.css';
 
 @font-face {
-  font-family: 'minecraft';
-  src: url('/fonts/minecraft.ttf') format('truetype');
-  font-weight: normal;
+  font-family: 'MinecraftPortfolio';
+  src: url('../public/fonts/minecraft.ttf') format('truetype');
+  font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 :root {
@@ -17,7 +17,7 @@
 
   --ws-bg: #2b2b2b;
   --ws-shadow: #000000;
-  --ws-w: clamp(540px, 58vw, 1180px);
+  --ws-w: min(693.333333px, calc(100vw - 32px), calc(189.781vh - 60.73px));
 }
 
 * {
@@ -32,7 +32,7 @@ body,
   width: 100%;
   height: 100%;
   overflow: hidden;
-  font-family: 'minecraft', 'Minecraftia', monospace;
+  font-family: 'MinecraftPortfolio', monospace;
   font-size: 16px;
   line-height: 1.4;
   background: var(--mc-bg);
@@ -50,7 +50,7 @@ body,
   position: relative;
 }
 
-/* Base screen used by other screens (grimorio). */
+/* Base screen used by other screens (crafting-table). */
 .mc-screen {
   width: 100%;
   height: 100%;
@@ -101,61 +101,55 @@ body,
 }
 
 .ws-column {
-  position: relative;
+  --ws-ui: 1.333333px;
+  position: absolute;
+  top: max(139px, 33.333333vh);
+  left: 50%;
   z-index: 2;
   width: var(--ws-w);
-  margin: 0 auto;
-  flex: 1 1 0;
-  min-height: 0;
-  padding-top: 5vh;
+  max-width: 693.333333px;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  container-type: inline-size;
+}
+
+@supports (width: 1cqw) {
+  .ws-column {
+    --ws-ui: 0.192307692cqw;
+  }
 }
 
 .ws-title {
-  text-align: center;
-  font-size: 54px;
-  color: #ffffff;
-  text-shadow: 2px 2px 0 var(--ws-shadow);
-  letter-spacing: 1px;
-  margin-bottom: 24px;
-}
-
-.ws-separator {
-  width: 100%;
-  height: 8px;
   flex: none;
-  background-repeat: repeat-x;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-}
-
-.ws-separator-header {
-  background-image: url('/gui/header_separator.png');
-  background-size: 128px 8px;
-}
-
-.ws-separator-footer {
-  background-image: url('/gui/footer_separator.png');
-  background-size: 128px 8px;
+  margin: calc(24 * var(--ws-ui)) 0 0;
+  color: #ffffff;
+  font-size: calc(32 * var(--ws-ui));
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  text-shadow: calc(1 * var(--ws-ui)) calc(1 * var(--ws-ui)) 0 var(--ws-shadow);
+  letter-spacing: 0;
 }
 
 .ws-search {
   position: relative;
   width: 100%;
-  margin-top: 28px;
+  max-width: 693.333333px;
+  height: calc(34 * var(--ws-ui));
+  margin: calc(20 * var(--ws-ui)) auto 0;
   flex: none;
 }
 
 .ws-search-icon {
   position: absolute;
-  left: 20px;
+  left: calc(8 * var(--ws-ui));
   top: 50%;
-  transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
   z-index: 1;
+  width: calc(12 * var(--ws-ui));
+  height: calc(12 * var(--ws-ui));
+  transform: translateY(-50%);
   pointer-events: none;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
@@ -163,8 +157,8 @@ body,
 
 .ws-search-input {
   width: 100%;
-  height: 80px;
-  padding: 0 20px 0 84px;
+  height: calc(34 * var(--ws-ui));
+  padding: 0 calc(8 * var(--ws-ui)) 0 calc(28 * var(--ws-ui));
   border: none;
   outline: none;
   background: url('/gui/sprites/widget/text_field.png') no-repeat center / 100% 100%;
@@ -172,8 +166,9 @@ body,
   color: #ffffff;
   caret-color: #ffffff;
   font-family: inherit;
-  font-size: 26px;
-  text-shadow: 2px 2px 0 var(--ws-shadow);
+  font-size: calc(12 * var(--ws-ui));
+  line-height: 1;
+  text-shadow: calc(1 * var(--ws-ui)) calc(1 * var(--ws-ui)) 0 var(--ws-shadow);
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
@@ -184,12 +179,13 @@ body,
 
 .ws-list {
   width: 100%;
-  margin-top: 24px;
+  max-width: 693.333333px;
+  margin: calc(16 * var(--ws-ui)) auto 0;
+  padding: 0;
   flex: none;
-  padding: 8px;
   background-image: url('/gui/menu_list_background.png');
   background-repeat: repeat;
-  background-size: 64px 64px;
+  background-size: calc(16 * var(--ws-ui)) calc(16 * var(--ws-ui));
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
@@ -198,8 +194,10 @@ body,
   position: relative;
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 12px;
+  gap: calc(8 * var(--ws-ui));
+  width: 100%;
+  height: calc(56 * var(--ws-ui));
+  padding: calc(6 * var(--ws-ui));
   cursor: pointer;
 }
 
@@ -210,8 +208,9 @@ body,
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.08s;
-  border: 16px solid transparent;
-  border-image: url('/gui/sprites/container/slot_highlight_back.png') 4 fill / 16px stretch;
+  border: calc(4 * var(--ws-ui)) solid transparent;
+  border-image: url('/gui/sprites/container/slot_highlight_back.png') 4 fill /
+    calc(4 * var(--ws-ui)) stretch;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
@@ -221,8 +220,8 @@ body,
 }
 
 .ws-entry-icon {
-  width: 256px;
-  height: 256px;
+  width: calc(44 * var(--ws-ui));
+  height: calc(44 * var(--ws-ui));
   flex-shrink: 0;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
@@ -234,57 +233,59 @@ body,
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: calc(2 * var(--ws-ui));
+  line-height: 1;
 }
 
 .ws-entry-name {
-  font-size: 40px;
-  font-weight: bold;
   color: #ffffff;
-  text-shadow: 2px 2px 0 var(--ws-shadow);
+  font-size: calc(14 * var(--ws-ui));
+  font-weight: bold;
+  text-shadow: calc(1 * var(--ws-ui)) calc(1 * var(--ws-ui)) 0 var(--ws-shadow);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .ws-entry-meta {
-  font-size: 24px;
-  color: #a5a5a5;
-  text-shadow: 2px 2px 0 var(--ws-shadow);
+  color: #c0c0c0;
+  font-size: calc(11 * var(--ws-ui));
+  text-shadow: calc(1 * var(--ws-ui)) calc(1 * var(--ws-ui)) 0 var(--ws-shadow);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .ws-buttons {
-  position: relative;
-  z-index: 2;
-  width: var(--ws-w);
-  margin: 0 auto;
-  padding-top: 40px;
-  padding-bottom: 36px;
+  width: 100%;
+  max-width: 693.333333px;
+  margin: calc(24 * var(--ws-ui)) auto 0;
+  padding: 0;
   flex: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: calc(4 * var(--ws-ui));
 }
 
 .ws-buttons-row {
+  width: 100%;
   display: flex;
-  gap: 8px;
+  gap: calc(4 * var(--ws-ui));
 }
 
 .ws-button {
-  flex: 1;
-  height: 80px;
-  padding: 0 12px;
+  min-width: 0;
+  height: calc(32 * var(--ws-ui));
+  padding: 0 calc(6 * var(--ws-ui));
+  flex: 1 1 0;
   border: none;
   background: url('/gui/sprites/widget/button.png') no-repeat center / 100% 100%;
   color: #ffffff;
   cursor: pointer;
   font-family: inherit;
-  font-size: 28px;
-  text-shadow: 2px 2px 0 var(--ws-shadow);
+  font-size: calc(13 * var(--ws-ui));
+  line-height: 1;
+  text-shadow: calc(1 * var(--ws-ui)) calc(1 * var(--ws-ui)) 0 var(--ws-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -364,7 +365,7 @@ body,
 }
 
 .mc-loading-text {
-  font-family: 'minecraft', 'Minecraftia', monospace;
+  font-family: 'MinecraftPortfolio', monospace;
   font-size: 24px;
   color: #e0e0e0;
   text-shadow:
@@ -378,80 +379,17 @@ body,
 }
 
 /* ------------------------------------------------------------------ */
-/* Responsive (integer downscale: x3 instead of x4)                    */
+/* Responsive                                                          */
 /* ------------------------------------------------------------------ */
+
+@media (max-height: 550px) {
+  .ws-column {
+    top: 50%;
+  }
+}
 
 @media (max-width: 760px) {
   :root {
-    --ws-w: 92vw;
     --gui-scale: 2;
-  }
-
-  .ws-title {
-    font-size: 40px;
-  }
-
-  .ws-column {
-    padding-top: 3vh;
-  }
-
-  .ws-separator {
-    height: 6px;
-  }
-
-  .ws-separator-header {
-    background-size: 96px 6px;
-  }
-
-  .ws-separator-footer {
-    background-size: 96px 6px;
-  }
-
-  .ws-search-icon {
-    width: 36px;
-    height: 36px;
-    left: 14px;
-  }
-
-  .ws-search-input {
-    height: 60px;
-    padding-left: 60px;
-    font-size: 20px;
-  }
-
-  .ws-list {
-    background-size: 48px 48px;
-  }
-
-  .ws-entry {
-    gap: 14px;
-    padding: 8px;
-  }
-
-  .ws-entry-highlight {
-    border-width: 12px;
-  }
-
-  .ws-entry-icon {
-    width: 192px;
-    height: 192px;
-  }
-
-  .ws-entry-name {
-    font-size: 28px;
-  }
-
-  .ws-entry-meta {
-    font-size: 18px;
-  }
-
-  .ws-buttons {
-    padding-bottom: 24px;
-  }
-
-  .ws-button {
-    height: 60px;
-    font-size: 20px;
-    padding: 0 6px;
   }
 }

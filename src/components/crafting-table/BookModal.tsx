@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { guiUrl } from './guiUrl';
 import { useAudio } from '../../audio/AudioContext';
 import type { Project } from '../../data/projects';
@@ -28,7 +29,7 @@ export function BookModal({ project, isOpen, onClose }: BookModalProps) {
 
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div className="mc-book-modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label={project.name}>
       <div className="mc-book-modal" onClick={(e) => e.stopPropagation()}>
         <button
@@ -66,6 +67,7 @@ export function BookModal({ project, isOpen, onClose }: BookModalProps) {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
