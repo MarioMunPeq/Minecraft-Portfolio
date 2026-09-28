@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAudio } from '../audio/AudioContext';
-import { Panorama3D } from './Panorama3D';
+import { Panorama } from './Panorama';
 
 const WORLD_NAME = 'Portfolio de Mario Muñoz';
 const BASE = import.meta.env.BASE_URL;
@@ -34,7 +34,7 @@ export function WorldSelect() {
 
   return (
     <div className="ws-screen">
-      <Panorama3D />
+      <Panorama />
       <img className="ws-pan-overlay" src={OVERLAY_SRC} alt="" />
 
       <div className="ws-column">

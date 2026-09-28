@@ -138,15 +138,52 @@ body,
 }
 
 /* ------------------------------------------------------------------ */
-/* Minecraft panorama background (three.js 3D cube)                    */
+/* Panorama del menu: los cuatro laterales del cubo de Minecraft,     */
+/* concatenados en una tira que se desplaza.                         */
 /* ------------------------------------------------------------------ */
+/* Cada cara es un cuadrado de 1024 px que se muestra a la altura de la */
+/* pantalla, que es justo lo que se veia antes con el cubo 3D. La    */
+/* animacion tarda lo mismo que una vuelta completa del cubo: 2*PI /  */
+/* 0.02 rad/s = 314 s, o sea 78,5 s por cara.                        */
 
-.panorama3d-container {
+.ws-panorama {
   position: fixed;
   inset: 0;
   z-index: 0;
-  width: 100%;
-  height: 100%;
+  overflow: hidden;
+}
+
+.ws-panorama-strip {
+  display: flex;
+  width: max-content;
+  height: 100vh;
+  animation: ws-panorama-drift 314s linear infinite;
+}
+
+.ws-panorama-face {
+  flex: none;
+  width: 100vh;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Cuatro caras es una vuelta completa, asi que al terminar se repite. */
+@keyframes ws-panorama-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-400vh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ws-panorama-strip {
+    animation: none;
+  }
 }
 
 .ws-pan-overlay {
