@@ -2,8 +2,10 @@ import type { ComponentType, ElementType } from 'react';
 
 export type AdvancementKind = 'task' | 'goal' | 'challenge';
 
-/** Un icono dibujado a mano (public/icons) o un item real de Minecraft. */
-export type AdvancementIcon = string | { item: string };
+/** Item real de Minecraft, con su ruta dentro de public/assets/mc/. */
+export interface AdvancementIcon {
+  item: string;
+}
 
 export interface AdvancementNodeMeta {
   id: string;
@@ -13,7 +15,7 @@ export interface AdvancementNodeMeta {
   period: string;
   /** task y goal comparten frame; challenge es el grande. */
   kind: AdvancementKind;
-  icon: string;
+  icon: AdvancementIcon;
   technologies: string[];
   /** Coordenadas dentro del lienzo de la pestana. */
   x: number;
@@ -22,8 +24,7 @@ export interface AdvancementNodeMeta {
   parents: string[];
 }
 
-export interface AdvancementNode extends Omit<AdvancementNodeMeta, 'icon'> {
-  icon: AdvancementIcon;
+export interface AdvancementNode extends AdvancementNodeMeta {
   Description: ComponentType<{ components?: Record<string, ElementType> }>;
 }
 

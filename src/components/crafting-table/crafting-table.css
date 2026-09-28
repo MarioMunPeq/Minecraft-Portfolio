@@ -196,11 +196,11 @@
 
 /* El slot de resultado de esta textura es un rectangulo de 18x26; el item */
  /* se centra dentro. */
-/* El marco de la textura es de 18x26, asi que el boton lo ocupa entero y el
+/* El marco de la textura es de 26x26, asi que el boton lo ocupa entero y el
    item de 16x16 se centra dentro. */
 .mc-result-slot {
   z-index: 1;
-  width: calc(18 * var(--px));
+  width: calc(26 * var(--px));
   height: calc(26 * var(--px));
 }
 

@@ -4,10 +4,11 @@ import { ItemSprite } from './ItemSprite';
 import { Slot } from './Slot';
 
 /**
- * El slot de resultado de esta textura es un rectangulo de 18x26 en (119, 30),
- * no un cuadrado. El boton ocupa el marco entero para que la zona clicable
- * sea la que se ve, y el item de 16x16 queda centrado dentro por flexbox:
- * 1px a los lados y 5px arriba y abajo.
+ * El slot de resultado de esta textura es un cuadrado de 26x26 en (119, 30),
+ * no un slot normal de 18x18: el marco va de x 119 a 144 y de y 30 a 55, con
+ * el interior de 24x24 en (120, 31). El boton ocupa el marco entero para que
+ * la zona clicable sea la que se ve, y el item de 16x16 queda centrado por
+ * flexbox, 5px a cada lado.
  */
 const RESULT_X = 119;
 const RESULT_Y = 30;
