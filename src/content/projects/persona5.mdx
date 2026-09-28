@@ -1,0 +1,63 @@
+export const meta = {
+  id: 'persona5',
+  title: 'Persona 5 Portfolio',
+  tagline: 'Mi CV convertido en una experiencia jugable, con estética de Persona 5.',
+  year: 2026,
+  status: 'activo',
+  demo: 'https://mariomunpeq.is-a.dev/',
+  repo: 'https://github.com/MarioMunPeq/portfolio-persona5',
+  result: 'items/golden_apple',
+  technologies: [
+    'React',
+    'TypeScript',
+    'Vite',
+    'Tailwind',
+    'Motion',
+    'React Router',
+    'HTML',
+    'CSS',
+    'Git',
+  ],
+  recipe: {
+    // Receta 3x3 completa: es el proyecto que usa todo el stack.
+    pattern: ['RTW', 'CVM', 'HGP'],
+    key: {
+      R: 'React',
+      T: 'TypeScript',
+      W: 'Tailwind',
+      C: 'CSS',
+      V: 'Vite',
+      M: 'Motion',
+      H: 'HTML',
+      G: 'Git',
+      P: 'React Router',
+    },
+  },
+};
+
+## Qué es
+
+Un portfolio personal que funciona como un CV viviente. En vez de una lista de
+proyectos, la información está repartida por secciones navegables con una
+estética que toma prestada el lenguaje visual de Persona 5: diagonales,
+contrastes duros y una paleta que grita.
+
+El objetivo nunca fue solo enseñar el trabajo, sino enseñar también la
+personalidad que hay detrás. Al final es la primera pantalla que ve alguien
+cuando busca mi nombre.
+
+## El reto
+
+Que la estética no se comiera el contenido. Un portfolio lleno de efectos es
+fácil de recordar y vacío de información. Cada sección tiene que seguir
+leyéndose bien aunque la animación se pare: el color, la tipografía y el
+ritmo cargan la identidad, y el texto se sostiene solo.
+
+## Qué aprendí
+
+- A separar el *chore* visual de la arquitectura: las transiciones se
+  gestionan con Motion en la capa de presentación, sin ensuciar los datos.
+- A usar Tailwind para no pelear con una hoja de estilos de 3.000 líneas
+  mientras el diseño iteraba tan rápido.
+- A découpalo todo con `React Router` para que cada sección tenga su URL y
+  se pueda enlazar suelta.

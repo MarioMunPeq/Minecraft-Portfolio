@@ -1,33 +1,83 @@
 import { useState } from 'react';
-import { PROJECTS } from '../../data/projects';
-import type { Project } from '../../data/projects';
+import { PROJECTS } from '../../content/projects';
+import type { Project } from '../../mc/types';
+import { useAudio } from '../../audio/AudioContext';
 import { ProjectList } from './ProjectList';
-import { ProjectRecipe } from './ProjectRecipe';
+import { RecipeGrid } from './RecipeGrid';
+import { ResultSlot } from './ResultSlot';
+import { InventoryGrid } from './InventoryGrid';
+import { BookModal } from './BookModal';
 
 export function CraftingStation() {
+  const { playClick, playLevelup } = useAudio();
   const [selectedProject, setSelectedProject] = useState<Project>(PROJECTS[0]);
   const [hoveredSlotId, setHoveredSlotId] = useState<string | null>(null);
   const [hoverPosition, setHoverPosition] = useState<{ x: number; y: number } | null>(null);
+  const [isBookOpen, setIsBookOpen] = useState(false);
+  const [isResultReady, setIsResultReady] = useState(false);
 
-  const handleHover = (id: string | null, position?: { x: number; y: number }) => {
+  const hover = (id: string | null, position?: { x: number; y: number }) => {
     setHoveredSlotId(id);
     setHoverPosition(position ?? null);
+  };
+
+  const handleSelect = (project: Project) => {
+    setSelectedProject(project);
+    setIsResultReady(false);
+  };
+
+  const handleTake = () => {
+    if (!isResultReady) return;
+    playClick();
+    playLevelup();
+    setIsBookOpen(true);
+  };
+
+  const handleRevealEnd = () => {
+    setIsResultReady(true);
   };
 
   return (
     <div className="mc-crafting-container">
       <ProjectList
         selectedProject={selectedProject}
-        onSelectProject={setSelectedProject}
+        onSelectProject={handleSelect}
         hoveredSlotId={hoveredSlotId}
         hoverPosition={hoverPosition}
-        onHover={handleHover}
+        onHover={hover}
       />
-      <ProjectRecipe
+
+      <div className="mc-panel mc-panel-right" aria-label="Mesa de crafteo">
+        <RecipeGrid
+          key={selectedProject.meta.id}
+          project={selectedProject}
+          hoveredSlotId={hoveredSlotId}
+          hoverPosition={hoverPosition}
+          onHover={hover}
+          onRevealEnd={handleRevealEnd}
+        />
+
+        <ResultSlot
+          project={selectedProject}
+          isReady={isResultReady}
+          hoveredSlotId={hoveredSlotId}
+          hoverPosition={hoverPosition}
+          onHover={hover}
+          onTake={handleTake}
+        />
+
+        <InventoryGrid
+          project={selectedProject}
+          hoveredSlotId={hoveredSlotId}
+          hoverPosition={hoverPosition}
+          onHover={hover}
+        />
+      </div>
+
+      <BookModal
         project={selectedProject}
-        hoveredSlotId={hoveredSlotId}
-        hoverPosition={hoverPosition}
-        onHover={handleHover}
+        isOpen={isBookOpen}
+        onClose={() => setIsBookOpen(false)}
       />
     </div>
   );

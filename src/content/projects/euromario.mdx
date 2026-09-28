@@ -1,0 +1,50 @@
+export const meta = {
+  id: 'euromario',
+  title: 'EuroMario',
+  tagline: 'Agregador de noticias de videojuegos que las lee, las filtra y las resume con IA.',
+  year: 2026,
+  status: 'activo',
+  demo: 'https://mariomunpeq.github.io/Euromario/',
+  repo: 'https://github.com/MarioMunPeq/Euromario',
+  result: 'items/enchanted_book',
+  technologies: ['Python', 'RSS', 'IA', 'JavaScript', 'GitHub Actions'],
+  recipe: {
+    // Cascada 3+2: un pipeline de datos que cae hacia el resultado.
+    pattern: ['PRI', 'JA '],
+    key: {
+      P: 'Python',
+      R: 'RSS',
+      I: 'IA',
+      J: 'JavaScript',
+      A: 'GitHub Actions',
+    },
+  },
+};
+
+## Qué es
+
+Cada día, un pipeline recoge las noticias de las últimas 24 horas de las
+fuentes de videojuegos, detecta de qué juegos habla cada una, puntúa cuánto
+interesa, agrupa las que cuentan lo mismo y publica un único resumen diario.
+
+Todo eso con modelos de lenguaje locales a través de **Ollama**, con **Groq**
+como alternativa, para no depender de que la API de pago de nadie responda.
+
+## El reto
+
+El problema nunca es recoger noticias: es que las fuentes repiten la misma
+noticia con distinto titular. El trabajo interesante está en el filtrado y en
+el agrupado, y en que un error de clasificación se note cuanto antes.
+
+La parte de Python es un *pipeline* con etapas claras, probada con `pytest` y
+con un `ruff` que no deja pasar un import sin ordenar.
+
+## Qué aprendí
+
+- Que un LLM vale mucho más como clasificador que como redactor: primero
+  etiquetar y puntuar, y luego dejar que el texto se genere con contexto ya
+  limpio.
+- A cubrir con `feedparser` y `BeautifulSoup` fuentes que tienen RSS y
+  fuentes que no lo tienen.
+- Que un `cron` de GitHub Actions es suficiente para un trabajo diario, y
+  que **el fallo se note en el propio commit** y no en silencio.

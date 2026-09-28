@@ -1,0 +1,48 @@
+export const meta = {
+  id: 'repository-library',
+  title: 'Repository Library',
+  tagline: 'Mis proyectos de desarrollo presentados como si fueran videojuegos de Steam.',
+  year: 2026,
+  status: 'activo',
+  demo: 'https://mariomunpeq.github.io/Repository-Library/',
+  repo: 'https://github.com/MarioMunPeq/Repository-Library',
+  result: 'items/emerald',
+  technologies: ['TypeScript', 'React', 'Vite', 'CSS'],
+  recipe: {
+    // 2x2: la receta mas simple, para dejar claro que no todas usan 9 slots.
+    pattern: ['RT', 'VC'],
+    key: {
+      R: 'React',
+      T: 'TypeScript',
+      V: 'Vite',
+      C: 'CSS',
+    },
+  },
+};
+
+## Qué es
+
+Un portfolio con la piel de Steam. En vez de una galería de tarjetas, cada
+proyecto es una ficha de juego: carátula, perfil, página de detalle,	y la
+librería con los logros y el progreso de instalación.
+
+La gracia está en el cambio de metáfora. Dejas de leer un CV y empiezas a
+**navegar una biblioteca**, y eso cambia por completo cómo se recorren los
+proyectos.
+
+## El reto
+
+Que la Skin de Steam no se convierta en un disfraz vacío. Si todo es vidriera
+y no hay información debajo, es solo un `iframe` bonito.
+
+La página de cada proyecto tenía que tener la misma densidad de datos que el
+resto de portfolios, y además generar sus propias miniaturas en `canvas` para
+las tarjetas.
+
+## Qué aprendí
+
+- A usar una metáfora conocida para que quien lo visita sepa qué va a esperar
+  antes de leer una línea.
+- A generar miniaturas en `canvas` en el cliente, sin pedirle nada al
+  servidor.
+- Que en un portfolio, el contenedor importa tanto como el contenido.

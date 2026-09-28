@@ -1,0 +1,49 @@
+export const meta = {
+  id: 'dungeon-archive',
+  title: 'Dungeon Archive',
+  tagline: 'Compañero de mesa offline para D&D 5e, pensado para usarse con una mano.',
+  year: 2026,
+  status: 'activo',
+  demo: 'https://mariomunpeq.github.io/Dungeon-Archive/',
+  repo: 'https://github.com/MarioMunPeq/Dungeon-Archive',
+  result: 'blocks/bookshelf',
+  technologies: ['TypeScript', 'React', 'Tailwind', 'Firebase', 'Zustand', 'PWA'],
+  recipe: {
+    // Cruz: cuatro pilares alrededor del nucleo de estado.
+    pattern: ['  Z', 'RTW', '  F'],
+    key: {
+      T: 'TypeScript',
+      R: 'React',
+      W: 'Tailwind',
+      F: 'Firebase',
+      Z: 'Zustand',
+    },
+  },
+};
+
+## Qué es
+
+Un cuaderno de mesa para tener abierto mientras juegas. Está pensado para
+**móvil y para una sola mano**: buscar un monstruo, tirar los dados y ver el
+resultado sin soltar el móvil de la mesa.
+
+Todo el contenido vive en un **compendio** que se busca al instante, y la app
+funciona sin conexión: es una PWA instalable, así que en un sitio con mala
+cobertura seguimos teniendo el bestiario.
+
+## El reto
+
+Que la información densa no bloquee la pantalla. El reto fue de interfaz:
+pocos toques, tipografía grande, cero scroll perdido y un buscador que
+responde al instante sobre una lista larga de criaturas y objetos.
+
+En el estado, **Zustand** resuelve lo que con `useState` se convertía en una
+maldición de re-renders: filtros, búsqueda y selección viven fuera del árbol
+de React.
+
+## Qué aprendí
+
+- A diseñar para el pulgar: objetivos grandes, todo alcanzable con una mano.
+- A virtualizar listas largas para que el buscador no se atasque.
+- Que "offline" no es un extra: es lo que hace que una app de mesa funcione
+  de verdad en una taberna con el móvil en modo avión.

@@ -9,9 +9,13 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "assets": "node scripts/extract-assets.mjs",
-    "icons": "node scripts/gen-icons.mjs"
+    "icons": "node scripts/gen-icons.mjs",
+    "check:encoding": "node scripts/check-encoding.mjs",
+    "check:recipes": "node --experimental-strip-types scripts/check-recipes.mjs",
+    "check": "npm run check:encoding && npm run check:recipes"
   },
   "dependencies": {
+    "@mdx-js/rollup": "^3.1.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.4",

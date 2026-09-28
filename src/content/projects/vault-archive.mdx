@@ -1,0 +1,50 @@
+export const meta = {
+  id: 'vault-archive',
+  title: 'Vault Archive',
+  tagline: 'Un portfolio entero dentro de un Pip-Boy 3000 Mk I de Fallout 3.',
+  year: 2026,
+  status: 'activo',
+  demo: 'https://mariomunpeq.github.io/Vault-Archive/',
+  repo: 'https://github.com/MarioMunPeq/Vault-Archive',
+  result: 'items/diamond',
+  technologies: ['TypeScript', 'React', 'CSS', 'Web Audio', 'Mapbox'],
+  recipe: {
+    // V invertida: dos ramas (interfaz y sonido) que caen en una base comun.
+    pattern: ['TA ', 'RM ', '  C'],
+    key: {
+      T: 'TypeScript',
+      A: 'Web Audio',
+      R: 'React',
+      M: 'Mapbox',
+      C: 'CSS',
+    },
+  },
+};
+
+## Qué es
+
+No es una web con un filtro verde puesto encima. Es un **Pip-Boy 3000 Mk I**:
+la carcasa, el tubo de rayos catódicos, el brillo de la pantalla y seis
+módulos que funcionan de verdad, cada uno con su tecla.
+
+`STAT` es una hoja de personaje con el S.P.E.C.I.A.L. interactivo, `MISIONES`
+un diario al estilo F3, `DATA` una terminal de la bóveda, y el resto completa
+el inventario de lo que hay que enseñar en un portfolio.
+
+## El reto
+
+Replicar la interfaz era lo fácil. Lo difícil fue el sonido: cada pulsación de
+tecla, cada cambio de módulo y cada error tienen que sonar a Fallout, con la
+**Web Audio API** sintetizando los zumbidos en vez de un solo archivo.
+
+Y lo segundo: que el mapa con **Mapbox** no rompa la ficción. El mapa es real,
+pero tiene que parecer un terminal.
+
+## Qué aprendí
+
+- A construir un sistema de sonido por capas con osciladores y filtros, que
+  es lo que le da el carácter a la interfaz.
+- A diseñar seis estados de interfaz que se puedan interrumpir el uno al otro
+  sin perder el contexto de dónde estás.
+- Que la ambientación es trabajo de verdad: la carcasa, el tubo catódico y el
+  ruido de fondo hacen más que cualquier animación.

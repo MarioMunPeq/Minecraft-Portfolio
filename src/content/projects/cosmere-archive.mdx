@@ -1,0 +1,63 @@
+export const meta = {
+  id: 'cosmere-archive',
+  title: 'Cosmere Archive',
+  tagline: 'Un archivo visual e interactivo del universo de Brandon Sanderson.',
+  year: 2026,
+  status: 'activo',
+  demo: 'https://mariomunpeq.github.io/Cosmere-Archive/',
+  repo: 'https://github.com/MarioMunPeq/Cosmere-Archive',
+  result: 'items/echo_shard',
+  technologies: [
+    'TypeScript',
+    'React',
+    'Vite',
+    'Tailwind',
+    'Three.js',
+    'D3.js',
+    'GSAP',
+    'Docker',
+  ],
+  recipe: {
+    // Anillo 3x3 con el centro vacio: el proyecto mas grande de todos.
+    pattern: ['RTW', 'G D', 'SKV'],
+    key: {
+      R: 'React',
+      T: 'TypeScript',
+      W: 'Tailwind',
+      G: 'GSAP',
+      D: 'D3.js',
+      S: 'Three.js',
+      K: 'Docker',
+      V: 'Vite',
+    },
+  },
+};
+
+## Qué es
+
+El universo de Sanderson no se puede contar en una lista, así que este
+proyecto lo trata como lo que es: una red. Cada planeta, cada mundo y cada
+personaje es un nodo, y las conexiones son los enlaces que existen en el
+libro.
+
+Se navega en dos dimensiones distintas: un **grafo de fuerzas** con `d3-force`
+para saltar de nodo en nodo, y una escena **3D** con Three.js para recorrer el
+espacio. Entre medias, GSAP se encarga de que nada se mueva de golpe.
+
+## El reto
+
+Que dos tecnologías de visualización muy distintas se sientan como la misma
+aplicación. El 2D y el 3D comparten estado, navegación y transiciones, y ahí
+es donde se fue todo el trabajo de verdad.
+
+Lo segundo fue el volumen: es el proyecto más grande que he hecho, y montarlo
+en Docker con `nginx` para servirlo fue la decisión que dejó de doler.
+
+## Qué aprendí
+
+- Que el 80% del trabajo de un proyecto visual no es el render, es la
+  coreografía entre las capas.
+- A usar `d3-force` para convertir un conjunto de datos en algo que se pueda
+  recorrer con el ratón.
+- A montar un contenedor de producción con `Docker` y `nginx` para no
+  depender del hosting de siempre.

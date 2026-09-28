@@ -1,8 +1,8 @@
 {
   "source": "1.21.8.jar",
-  "extracted": 116,
+  "extracted": 117,
   "groups": {
-    "items": 67,
+    "items": 68,
     "blocks": 34,
     "entities": 6,
     "particles": 9
@@ -96,6 +96,7 @@
     "items/lapis_lazuli.png",
     "items/lead.png",
     "items/leather.png",
+    "items/map.png",
     "items/music_disc_cat.png",
     "items/name_tag.png",
     "items/nautilus_shell.png",

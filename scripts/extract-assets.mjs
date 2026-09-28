@@ -30,6 +30,7 @@ const ITEMS = [
   'brewing_stand', // React
   'flint_and_steel', // Vite
   'book', // HTML
+  'map', // Mapbox
   'brush', // CSS
   'comparator', // JavaScript
   'ender_eye', // Git
