@@ -21,7 +21,7 @@ const COLS = 9;
 const MAX_CELLS = COLS * 6;
 const TEXT_X = 8;
 const TEXT_W = 160;
-const TEXT_BOTTOM = 214;
+const TEXT_BOTTOM = 221;
 
 interface ChestModalProps {
   project: Project;
@@ -85,11 +85,11 @@ export function ChestModal({ project, isOpen, onClose }: ChestModalProps) {
 
   const galleryPaths = meta.gallery.map((file) => `projects/${meta.id}/${file}`);
 
-  // El panel de texto arranca justo debajo de la ultima fila ocupada, para no
-  // dejar media rejilla vacia por encima. Si el cofre se llena del todo, cae
-  // en su sitio de siempre, sobre el inventario del jugador.
-  const usedRows = Math.min(MAX_CELLS, Math.ceil(cells.length / COLS)) / COLS;
-  const textTop = Math.max(ITEMS_Y + 2 * PITCH + 2, ITEMS_Y + usedRows * PITCH + 2);
+  // El panel de texto arranca justo debajo de la ultima fila ocupada y llega
+  // hasta el borde inferior del cofre, para que no se vea ninguna rejilla
+  // vacia ni el inventario del jugador de la textura.
+  const usedRows = Math.ceil(Math.min(MAX_CELLS, cells.length) / COLS);
+  const textTop = ITEMS_Y + usedRows * PITCH;
   const textHeight = TEXT_BOTTOM - textTop;
 
   return createPortal(
