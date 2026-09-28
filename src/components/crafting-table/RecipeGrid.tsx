@@ -9,10 +9,10 @@ import { Slot } from './Slot';
 /**
  * Coordenadas medidas sobre gui/container/crafting_table.png. El CSS define
  * --px como "un pixel de la textura", asi que aqui basta con multiplicar.
- * La cuadrícula 3x3 arranca en (29, 16) y avanza 18: celda de 16 + separador 2.
+ * La cuadrícula 3x3 arranca en (30, 17) y avanza 18: celda de 16 + separador 2.
  */
-const GRID_X = 29;
-const GRID_Y = 16;
+const GRID_X = 30;
+const GRID_Y = 17;
 const PITCH = 18;
 
 const FILL_INTERVAL_MS = 70;

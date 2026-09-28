@@ -4,11 +4,11 @@ import { ItemSprite } from './ItemSprite';
 import { Slot } from './Slot';
 
 /**
- * El slot de resultado de esta textura es un rectangulo de 18x26, no un
- * cuadrado. El item va de 16x16 centrado dentro: 1px a los lados y 5 arriba.
+ * El slot de resultado de esta textura es un rectangulo de 18x26 en (119, 30),
+ * no un cuadrado. El item va de 16x16 centrado dentro: 1px a los lados, 5 arriba.
  */
-const RESULT_X = 119;
-const RESULT_Y = 34;
+const RESULT_X = 120;
+const RESULT_Y = 35;
 
 interface ResultSlotProps {
   project: Project;

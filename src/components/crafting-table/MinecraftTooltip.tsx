@@ -1,24 +1,33 @@
+import { createPortal } from 'react-dom';
+
 interface MinecraftTooltipProps {
   text: string;
   isVisible: boolean;
   position?: { x: number; y: number };
 }
 
-const OFFSET_X = 14;
-const OFFSET_Y = 10;
+const OFFSET = 14;
 const MARGIN = 8;
 
 export function MinecraftTooltip({ text, isVisible, position }: MinecraftTooltipProps) {
   if (!isVisible || !position) return null;
 
-  // El tooltip se ancla al raton pero no puede salirse de la pantalla.
-  const flipX = position.x + OFFSET_X > window.innerWidth - 180;
-  const left = flipX ? position.x - OFFSET_X - 160 : position.x + OFFSET_X;
-  const top = Math.min(position.y + OFFSET_Y, window.innerHeight - MARGIN - 24);
+  // El panel que contiene el slot es un contenedor de tamaño (container-type),
+  // y eso convierte sus descendientes con position: fixed en absolutos
+  // respecto al panel. El tooltip tiene que salir a document.body para poder
+  // anclarse a la ventana y no lo recorta el overflow del panel.
+  const flipX = position.x + OFFSET + 180 > window.innerWidth;
+  const left = flipX ? position.x - OFFSET - 180 : position.x + OFFSET;
+  const top = Math.min(position.y + OFFSET, window.innerHeight - MARGIN - 28);
 
-  return (
-    <div className="mc-tooltip" style={{ left: Math.max(left, MARGIN), top }} role="tooltip">
+  return createPortal(
+    <div
+      className="mc-tooltip"
+      style={{ left: Math.max(left, MARGIN), top }}
+      role="tooltip"
+    >
       <span className="mc-tooltip-text">{text}</span>
-    </div>
+    </div>,
+    document.body,
   );
 }

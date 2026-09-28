@@ -2,9 +2,10 @@
 /* Pantalla de la mesa de crafteo (proyectos)                          */
 /* ------------------------------------------------------------------ */
 /* Las texturas de contenedor son 256x256, pero el GUI que dibujan dentro  */
-/* no los ocupa enteros: la mesa mide 174x164 y la lista 193x134. Por eso */
-/* --px es "un pixel de la textura", y las coordenadas de los slots se    */
-/* escriben tal cual, igual que en el juego.                             */
+/* no las ocupa entero: la mesa mide 176x166 y la lista 195x136, y el      */
+/* margen sobrante es transparente. Por eso --px es "un pixel de la        */
+/* textura" y las coordenadas de los slots se escriben tal cual, medidas   */
+/* sobre la imagen, igual que en el juego.                               */
 /* ------------------------------------------------------------------ */
 
 .mc-crafting-table-screen {
@@ -17,9 +18,9 @@
   user-select: none;
 }
 
-/* Ancho total = altura * (193/134 + 174/164). */
+/* Ancho total = altura * (195/136 + 176/166). */
 .mc-crafting-container {
-  --stack-ratio: 2.5013;
+  --stack-ratio: 2.494;
   height: min(70vh, calc(96vw / var(--stack-ratio)), 700px);
   min-height: 360px;
   display: flex;
@@ -39,20 +40,20 @@
   container-type: size;
 }
 
-/* Mesa de crafteo: GUI de 174x164 dentro de la textura de 256x256. */
+/* Mesa de crafteo: GUI de 176x166 dentro de la textura de 256x256. */
 .mc-panel-right {
-  aspect-ratio: 174 / 164;
-  --px: calc(100cqw / 174);
+  aspect-ratio: 176 / 166;
+  --px: calc(100cqw / 176);
   background-image: url('/gui/container/crafting_table.png');
-  background-size: calc(256 / 174 * 100%) calc(256 / 164 * 100%);
+  background-size: calc(256 / 176 * 100%) calc(256 / 166 * 100%);
 }
 
-/* Lista de proyectos: GUI de 193x134 dentro de la textura de 256x256. */
+/* Lista de proyectos: GUI de 195x136 dentro de la textura de 256x256. */
 .mc-panel-left {
-  aspect-ratio: 193 / 134;
-  --px: calc(100cqw / 193);
+  aspect-ratio: 195 / 136;
+  --px: calc(100cqw / 195);
   background-image: url('/gui/container/creative_inventory/tab_item_search.png');
-  background-size: calc(256 / 193 * 100%) calc(256 / 134 * 100%);
+  background-size: calc(256 / 195 * 100%) calc(256 / 136 * 100%);
 }
 
 /* --------------------------- Slot base ---------------------------- */
@@ -104,16 +105,16 @@
 
 /* --------------------- Panel izquierdo: proyectos ------------------ */
 
-/* La barra de busqueda de la textura va de x 80 a 160, y 4 a 15. */
+/* La barra de busqueda de la textura ocupa x 81..160, y 5..14. */
 .mc-search-input {
   position: absolute;
   z-index: 2;
   left: calc(81 * var(--px));
   top: calc(5 * var(--px));
-  width: calc(75 * var(--px));
-  height: calc(8 * var(--px));
+  width: calc(80 * var(--px));
+  height: calc(10 * var(--px));
   box-sizing: border-box;
-  padding: 0;
+  padding: 0 calc(2 * var(--px));
   border: 0;
   border-radius: 0;
   outline: 0;
@@ -121,7 +122,7 @@
   color: #3f3f3f;
   caret-color: #3f3f3f;
   font-family: inherit;
-  font-size: calc(8 * var(--px));
+  font-size: calc(7 * var(--px));
   line-height: 1;
   text-shadow: none;
   appearance: none;
@@ -131,14 +132,14 @@
   color: #6a6a6a;
 }
 
-/* Rejilla de 9x5 en x 8, y 17, con paso 18. */
+/* Rejilla de 9 columnas en x 9 y 5 filas desde y 18, con paso 18. */
 .mc-project-grid {
   position: absolute;
   z-index: 1;
-  left: calc(8 * var(--px));
-  top: calc(17 * var(--px));
-  width: calc(160 * var(--px));
-  height: calc(88 * var(--px));
+  left: calc(9 * var(--px));
+  top: calc(18 * var(--px));
+  width: calc(162 * var(--px));
+  height: calc(90 * var(--px));
   display: grid;
   grid-template-columns: repeat(9, calc(18 * var(--px)));
   grid-auto-rows: calc(18 * var(--px));
@@ -158,9 +159,9 @@
 .mc-no-results {
   position: absolute;
   z-index: 3;
-  left: calc(8 * var(--px));
-  top: calc(30 * var(--px));
-  width: calc(160 * var(--px));
+  left: calc(9 * var(--px));
+  top: calc(40 * var(--px));
+  width: calc(162 * var(--px));
   margin: 0;
   color: #3f3f3f;
   font-size: calc(7 * var(--px));
@@ -178,7 +179,7 @@
   pointer-events: none;
 }
 
-/* Cuadrícula 3x3 en x 29, y 16, celda 16, paso 18. */
+/* Cuadrícula 3x3 en x 30, y 17, celda 16, paso 18. */
 .mc-recipe-slot {
   pointer-events: auto;
   opacity: 0;
@@ -218,13 +219,13 @@
 
 /* --------------------------- Inventario ---------------------------- */
 
-/* Inventario del jugador: 9 columnas en x 7, primera fila en y 83. */
+/* Inventario del jugador: 9 columnas en x 8, primera fila en y 84. */
 .mc-inventory-grid {
   position: absolute;
   z-index: 1;
-  left: calc(7 * var(--px));
-  top: calc(83 * var(--px));
-  width: calc(160 * var(--px));
+  left: calc(8 * var(--px));
+  top: calc(84 * var(--px));
+  width: calc(162 * var(--px));
   height: calc(18 * var(--px));
   display: grid;
   grid-template-columns: repeat(9, calc(18 * var(--px)));
