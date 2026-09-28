@@ -1048,6 +1048,32 @@ add('michelin', {
   '................',
 ]);
 
+/* ------------------------------ Synersight ------------------------------ */
+/* Icono provisional: un ojo, por el nombre. Sustituir por el logo real. */
+add('synersight', {
+  k: K,
+  b: [30, 74, 120],
+  c: [86, 200, 220],
+  w: [255, 255, 255],
+}, [
+  '................',
+  '................',
+  '................',
+  '.....kkkkkk.....',
+  '...kkbbbbbbkk...',
+  '..kbbbwwwwbbbk..',
+  '.kbbwwccccwwbbk.',
+  'kbbwcccccccccwb.',
+  'kbwcccckkccckwb.',
+  'kbwcccckkccckwb.',
+  'kbbwcccccccccwb.',
+  '.kbbwwccccwwbbk.',
+  '..kbbbwwwwbbbk..',
+  '...kkbbbbbbkk...',
+  '.....kkkkkk.....',
+  '................',
+]);
+
 /* ------------------------------- Cognizant ------------------------------ */
 add('cognizant', {
   k: K,

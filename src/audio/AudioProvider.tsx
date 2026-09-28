@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { AudioContext } from './AudioContext';
 import type { AudioApi } from './AudioContext';
 import { getAudioMuted, setAudioMuted, playSound, MENU_MUSIC } from './audio';
-import { IconImage } from '../components/crafting-table/IconImage';
+import { guiUrl } from '../components/crafting-table/guiUrl';
 
 export function AudioProvider({ children }: { children: ReactNode }) {
   const [muted, setMuted] = useState(() => getAudioMuted());
@@ -63,10 +63,12 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         onClick={toggleMuted}
         aria-pressed={!muted}
         title={muted ? 'Activar sonido' : 'Silenciar'}
+        aria-label={muted ? 'Activar sonido' : 'Silenciar'}
       >
-        <IconImage
-          name="webaudio"
+        <span
           className={`mc-audio-toggle-icon${muted ? ' is-muted' : ''}`}
+          style={{ backgroundImage: `url("${guiUrl('gui/sprites/icon/music_notes.png')}")` }}
+          aria-hidden
         />
       </button>
       {children}

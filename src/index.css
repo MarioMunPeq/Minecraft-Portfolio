@@ -1,5 +1,5 @@
 @import './components/crafting-table/crafting-table.css';
-@import './components/timeline/timeline.css';
+@import './components/advancements/advancements.css';
 
 @font-face {
   font-family: 'MinecraftPortfolio';
@@ -50,12 +50,60 @@ body,
   position: relative;
 }
 
+/* Boton de sonido: fuera del flujo para que no empuje a las pantallas. */
+.mc-audio-toggle {
+  position: fixed;
+  z-index: 1500;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 2px solid #000000;
+  background: rgba(20, 20, 24, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.mc-audio-toggle:hover {
+  background: rgba(50, 50, 58, 0.9);
+}
+
+.mc-audio-toggle-icon {
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 16px 128px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  /* music_notes.png es una hoja de 8 frames de 16x16. */
+  animation: mc-audio-frames 0.5s steps(8) infinite;
+}
+
+.mc-audio-toggle-icon.is-muted {
+  animation: none;
+  filter: grayscale(1) brightness(0.5);
+}
+
+@keyframes mc-audio-frames {
+  from {
+    background-position-y: 0;
+  }
+  to {
+    background-position-y: -128px;
+  }
+}
 /* Base screen used by other screens (crafting-table). */
 .mc-screen {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: flex;  flex-direction: column;
   position: relative;
   background: var(--mc-bg);
 }
