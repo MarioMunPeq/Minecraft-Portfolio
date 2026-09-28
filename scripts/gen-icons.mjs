@@ -2,13 +2,14 @@
 // Uso: node scripts/gen-icons.mjs
 import { deflateSync } from 'node:zlib';
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const OUT = join(ROOT, 'public', 'icons');
-const MINECRAFT_GUI = 'C:/Users/Mario/Downloads/InventivetalentDev minecraft-assets 26.2 assets-minecraft_textures_gui';
+const MINECRAFT_GUI = join(ROOT, 'public', 'gui');
 
 mkdirSync(OUT, { recursive: true });
 
@@ -1657,7 +1658,7 @@ for (let i = 0; i < names.length; i++) {
     }
   }
 }
-const sheetPath = join('C:/Users/Mario/AppData/Local/Temp/opencode', 'icons-sheet.png');
+const sheetPath = join(tmpdir(), 'minecraft-portfolio-icons-sheet.png');
 writeFileSync(sheetPath, encodePNG(sheetW, sheetH, sheet));
 console.log(`sprite sheet: ${sheetPath}`);
 console.log(`total iconos: ${names.length}`);
