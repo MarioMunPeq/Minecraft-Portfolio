@@ -38,8 +38,19 @@ export function LoreBox({ node, anchor, onClose }: LoreBoxProps) {
   const left = flip ? Math.max(anchor.x - WIDTH - 12, MARGIN) : anchor.x + 12;
   const top = Math.max(Math.min(anchor.y - 20, window.innerHeight - 260), MARGIN);
 
+  /* En vertical no hay sitio a un lado del nodo, asi que la caja se pega al
+     borde inferior y ocupa el ancho entero, como una hoja. Los estilos van
+     inline, asi que la posicion de abajo no se puede resolver desde el CSS. */
+  const isSheet = window.matchMedia('(max-width: 900px) and (orientation: portrait)').matches;
+  const placement = isSheet ? { left: 0, right: 0, bottom: 0 } : { left, top };
+
   return createPortal(
-    <div className="mc-lore" style={{ left, top }} role="dialog" aria-label={node.title}>
+    <div
+      className={`mc-lore${isSheet ? ' mc-lore-sheet' : ''}`}
+      style={placement}
+      role="dialog"
+      aria-label={node.title}
+    >
       <div className="mc-lore-head">
         <h3 className="mc-lore-title">{node.title}</h3>
         <p className="mc-lore-sub">{node.subtitle}</p>

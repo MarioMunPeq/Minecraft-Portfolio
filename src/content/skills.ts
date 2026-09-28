@@ -49,6 +49,24 @@ export const ENCHANT_WORDS = [
   'farol',
   'yunque',
   'escalera',
+  /* Cortas: el nombre de cada fila solo da para unas nueve letras, asi que
+     el generador de jeroglificos solo puede usar palabras de 3 a 5. */
+  'oro',
+  'mar',
+  'sol',
+  'pan',
+  'sal',
+  'paz',
+  'voz',
+  'ala',
+  'aro',
+  'eje',
+  'nube',
+  'ruta',
+  'duna',
+  'veta',
+  'nudo',
+  'lazo',
 ];
 
 /** Lo que dice el bocadillo del aldeano en el menu. */

@@ -673,3 +673,47 @@
 }
 
 /* ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ */
+/* Movil en vertical: los dos paneles en columna                       */
+/* ------------------------------------------------------------------ */
+/* En horizontal los paneles van en fila, con la altura mandando y un   */
+/* ancho total de altura * 2.494. En vertical eso no cabe: con 480px de  */
+/* ancho la altura sale de 96vw/2.494 = 185px y el min-height de 360px   */
+/* obliga a un contenedor de 898px, que se sale de la pantalla.        */
+/*                                                                       */
+/* Aqui se apilan, y el ancho de cada panel sale del menor entre lo que */
+/* queda de ancho y lo que permite el alto disponible. Apilados miden    */
+/* 136/195 + 166/176 = 1.64 veces su ancho, de ahi el 1.64 del divisor.  */
+
+@media (max-width: 900px) and (orientation: portrait) {
+  .mc-crafting-container {
+    --panel-w: min(calc(100vw - 16px), calc((100vh - 150px) / 1.64));
+    height: auto;
+    min-height: 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: calc(10 * var(--tui));
+  }
+
+  .mc-panel {
+    height: auto;
+    width: var(--panel-w);
+  }
+
+  .mc-back-button {
+    left: 12px;
+    bottom: 12px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .mc-craft-hint {
+    /* Por encima del boton de volver, que esta en la esquina: con las dos en
+       el mismo borde la miniauda le caia encima. */
+    bottom: 62px;
+    padding: 0 12px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+}

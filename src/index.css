@@ -422,6 +422,80 @@ body,
 }
 
 /* ------------------------------------------------------------------ */
+/* Movil en vertical: tipos y zonas de tap mas grandes                */
+/* ------------------------------------------------------------------ */
+/* Con --tui a min(100vw/427, 100vh/240), en vertical manda el ancho: en  */
+/* un movil de 480px sale 1.12, asi que un texto de 8 px de GUI se pinta  */
+/* a 9px reales. Aqui se suben los tipos y se les da a los controles un   */
+/* minimo de 44px de alto, que es lo que necesita un dedo.              */
+
+@media (max-width: 900px) and (orientation: portrait) {
+  /* Arriba, no centrada: el contenido arranca bajo el borde superior y    */
+  /* baja. Con seis botones en columna ya no cabe centrado sin recorte.     */
+  .ws-column {
+    top: max(52px, 6vh);
+    bottom: auto;
+    transform: translateX(-50%);
+    width: calc(100vw - 24px);
+  }
+
+  .ws-list {
+    flex: 0 1 auto;
+    max-height: 30vh;
+  }
+
+  .ws-title {
+    font-size: calc(12 * var(--tui));
+  }
+
+  .ws-search {
+    width: 100%;
+    height: calc(20 * var(--tui));
+    margin-top: calc(10 * var(--tui));
+  }
+
+  .ws-search-icon {
+    width: calc(11 * var(--tui));
+    height: calc(11 * var(--tui));
+  }
+
+  .ws-search-input {
+    height: calc(20 * var(--tui));
+    padding-left: calc(17 * var(--tui));
+    font-size: calc(10 * var(--tui));
+  }
+
+  .ws-entry {
+    min-height: 52px;
+  }
+
+  .ws-entry-name {
+    font-size: calc(12 * var(--tui));
+  }
+
+  .ws-entry-meta {
+    font-size: calc(10 * var(--tui));
+  }
+
+  /* Un boton por fila, tambien en las dos filas que en horizontal van de   */
+  /* dos en dos y de cuatro en cuatro.                                       */
+  .ws-buttons-row {
+    flex-direction: column;
+  }
+
+  .ws-button,
+  .ws-buttons-row:last-child .ws-button {
+    /* flex: none es imprescindible: la regla de escritorio deja flex: 1 1 0 */
+    /* para repartir el ancho en una fila, y en columna flex-basis manda sobre */
+    /* la altura, con lo que los cuatro botones de abajo se aplanan a cero.   */
+    flex: none;
+    width: 100%;
+    height: 50px;
+    font-size: 14px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* Loading screen                                                      */
 /* ------------------------------------------------------------------ */
 
@@ -522,6 +596,38 @@ body,
   pointer-events: none;
 }
 
+/* En vertical la caja y los textos salen bastante mas grandes: el alto de  */
+/* la pantalla esta libre y la referencia de 427x240 no lo aprovecha. */
+@media (max-width: 900px) and (orientation: portrait) {
+  .mc-loading-screen {
+    background-size: calc(32 * var(--tui)) calc(32 * var(--tui));
+  }
+
+  .mc-loading-percent {
+    font-size: calc(18 * var(--tui));
+  }
+
+  .mc-loading-box {
+    --box: min(calc(220 * var(--tui)), calc(100vw - 48px));
+    margin-top: calc(12 * var(--tui));
+    padding: calc(6 * var(--tui));
+  }
+
+  .mc-loading-box-face {
+    border-width: calc(4 * var(--tui));
+  }
+
+  .mc-loading-box-face::after {
+    inset: calc(16 * var(--tui));
+    border-width: calc(2 * var(--tui));
+  }
+
+  .mc-loading-text {
+    margin-top: calc(14 * var(--tui));
+    font-size: calc(14 * var(--tui));
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Responsive                                                          */
 /* ------------------------------------------------------------------ */
@@ -529,11 +635,5 @@ body,
 @media (max-height: 550px) {
   .ws-column {
     top: 50%;
-  }
-}
-
-@media (max-width: 760px) {
-  :root {
-    --gui-scale: 2;
   }
 }

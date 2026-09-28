@@ -336,3 +336,52 @@
   height: 100%;
   image-rendering: pixelated;
 }
+
+/* ------------------------------------------------------------------ */
+/* Movil en vertical                                                   */
+/* ------------------------------------------------------------------ */
+/* Por debajo de 900px el aldeano se escondia, y con el las habilidades */
+/* blandas no se veian en el movil. En vertical sale otra vez, pero en   */
+/* petitito: --vh de 7 a 5 y un bocadillo mas corto. En horizontal sigue */
+/* escondido, que es lo que hacia el bloque de 900px de arriba.        */
+
+@media (max-width: 900px) and (orientation: portrait) {
+  .mc-villager {
+    display: flex;
+    --vh: 6;
+    /* Abajo a la derecha del todo, como en horizontal. Con los botones     */
+    /* arriba ya no hay colision, pero hay que dejarle sitio al             */
+    /* copyright, que tambien vive en esa esquina.                          */
+    top: auto;
+    right: 4%;
+    bottom: 6%;
+    gap: 6px;
+  }
+
+  .mc-villager-bubble {
+    max-width: 62vw;
+    padding: 5px 7px;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .mc-villager-bubble::after {
+    bottom: -6px;
+    width: 8px;
+    height: 8px;
+  }
+}
+/* ------------------------------------------------------------------ */
+/* Movil en vertical: la GUI se dimensiona por ancho, no por alto       */
+/* ------------------------------------------------------------------ */
+/* La GUI es de 176x166, o sea 1.06 de proporcion. Con la altura mandando */
+/* (min(72vh, 620px)) en un movil vertical salen 763 px de ancho: la     */
+/* ventana se sale por los dos lados. Aqui manda el ancho, que es lo     */
+/* unico que cabe, y la altura sale de la proporcion.                   */
+
+@media (max-width: 900px) and (orientation: portrait) {
+  .mc-enchant {
+    height: auto;
+    width: calc(100vw - 12px);
+  }
+}

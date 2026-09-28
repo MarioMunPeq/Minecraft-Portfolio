@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent } from 'react';
 import { ADVANCEMENT_TABS } from '../../content/advancements';
 import { boundsFor, MAX_SCALE, NODE_SIZE } from '../../mc/advancements';
@@ -85,34 +85,41 @@ export function AdvancementsScreen() {
   }, []);
 
   /**
-   * La ventana es ancha y baja (el GUI mide 252x140), asi que el arbol se
-   * escala para que entre entero y no se vea un trozo vacio al entrar.
+   * Ajusta el arbol a la ventana. Escala y desplazamiento se calculan aqui
+   * mismo y con los mismos numeros: si el centrado se midiera en otro efecto
+   * leeria un canvas con la escala anterior, y en vertical el arbol se
+   * queda a medio metro del centro sin que se note por que.
    */
   const fitTree = useCallback(() => {
     const vp = viewportRef.current;
     if (!vp || vp.clientWidth === 0) return;
     const fit = Math.min(vp.clientWidth / bounds.w, vp.clientHeight / bounds.h);
-    setScale(Math.max(1, Math.min(MAX_SCALE, fit)));
-  }, [bounds.w, bounds.h]);
+    const next = Math.max(1, Math.min(MAX_SCALE, fit));
+    setScale(next);
+    setPan(
+      clampPan(
+        (vp.clientWidth - bounds.w * next) / 2,
+        (vp.clientHeight - bounds.h * next) / 2,
+      ),
+    );
+  }, [bounds.w, bounds.h, clampPan]);
 
   useEffect(() => {
     fitTree();
     window.addEventListener('resize', fitTree);
-    return () => window.removeEventListener('resize', fitTree);
+    /* Tambien un observer: el viewport puede cambiar de tamano sin que lo
+       haga la ventana (por ejemplo cuando la altura llega por dvh y se
+       resuelve tarde), y con solo el evento resize el arbol se queda
+       ajustado a una medida que ya no es la real. */
+    const vp = viewportRef.current;
+    const observer = vp ? new ResizeObserver(fitTree) : null;
+    observer?.observe(vp as Element);
+    return () => {
+      window.removeEventListener('resize', fitTree);
+      observer?.disconnect();
+    };
   }, [fitTree]);
 
-  /**
-   * Recentra despues de que la escala ya este aplicada. Las pestañas quedan
-   * fuera de la ventana, asi que el hueco se puede centrar tal cual.
-   */
-  useLayoutEffect(() => {
-    const vp = viewportRef.current;
-    const cv = canvasRef.current;
-    if (!vp || !cv || cv.offsetWidth === 0) return;
-    setPan(
-      clampPan((vp.clientWidth - cv.offsetWidth) / 2, (vp.clientHeight - cv.offsetHeight) / 2),
-    );
-  }, [activeTab, scale, clampPan]);
 
   const stopDrag = useCallback(() => {
     if (drag.current.active) {

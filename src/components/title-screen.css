@@ -49,11 +49,14 @@
 }
 
 /* El texto amarillo del juego, inclinado y solapado sobre el borde derecho
-   del logo, como en la pantalla de titulo. */
+   del logo, como en la pantalla de titulo. Va anclado a la pantalla, no al
+   stack, porque el stack lleva un transform. El borde derecho del logo cae
+   en 50% + 128 tui, y el texto arranca 56 tui antes que eso. */
 .mc-title-splash {
   position: absolute;
-  top: calc(20 * var(--tui));
-  left: calc(100% - 56 * var(--tui));
+  z-index: 2;
+  top: calc(36 * var(--tui));
+  left: calc(50% + 72 * var(--tui));
   color: #ffff00;
   font-size: calc(7 * var(--tui));
   line-height: 1.1;
@@ -181,5 +184,81 @@
 
   .mc-title-splash {
     display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Movil en vertical                                                   */
+/* ------------------------------------------------------------------ */
+/* En vertical los siete botones van en columna, uno por fila, con una   */
+/* altura y un tipo grandes, y arrancan justo debajo del logo en vez de  */
+/* pegados al borde de abajo. La pantalla pasa a ser una columna de     */
+/* flex para que el menu se coloque solo tras el logo, sin tener que     */
+/* adivinar cuanto alto ocupa.                                          */
+
+@media (max-width: 900px) and (orientation: portrait) {
+  .mc-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: calc(24 * var(--tui));
+  }
+
+  /* El logo y el menu fluyen: se quitar del flujo y el transform que    */
+  /* usaban para centrarse.                                              */
+  .mc-title-stack,
+  .mc-title-menu {
+    position: static;
+    transform: none;
+  }
+
+  .mc-title-menu {
+    top: auto;
+    bottom: auto;
+    width: min(calc(408 * var(--tui)), calc(100vw - 24px));
+    margin-top: calc(18 * var(--tui));
+    gap: calc(6 * var(--tui));
+  }
+
+  /* Un boton por fila, tambien en las dos filas que en horizontal van    */
+  /* de dos en dos.                                                       */
+  .mc-title-menu-row,
+  .mc-title-menu-bottom {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .mc-title-menu-bottom {
+    margin-top: calc(10 * var(--tui));
+  }
+
+  .mc-title-btn {
+    width: 100%;
+    min-height: 52px;
+    font-size: 15px;
+  }
+
+  .mc-title-menu-row .mc-title-btn,
+  .mc-title-btn-small {
+    width: 100%;
+    min-height: 52px;
+    font-size: 15px;
+  }
+
+  /* El splash no cabe junto al logo a la derecha, asi que baja al hueco  */
+  /* que queda entre el final de los botones y el borde de abajo.         */
+  .mc-title-splash {
+    display: block;
+    position: fixed;
+    top: auto;
+    bottom: 22%;
+    left: 50%;
+    font-size: calc(13 * var(--tui));
+    transform: translateX(-50%) rotate(-20deg);
+  }
+
+  .mc-title-version,
+  .mc-title-copyright {
+    font-size: calc(6 * var(--tui));
   }
 }

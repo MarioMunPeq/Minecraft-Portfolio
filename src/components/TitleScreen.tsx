@@ -40,8 +40,11 @@ export function TitleScreen() {
       <div className="mc-title-stack">
         <img className="mc-title-logo" src={`${BASE}gui/title/minecraft.png`} alt="Minecraft" />
         <img className="mc-title-edition" src={`${BASE}gui/title/edition.png`} alt="Java Edition" />
-        <span className="mc-title-splash">{splash}</span>
       </div>
+
+      {/* Fuera del stack a proposito: este tiene un transform, y un ancestro
+          con transform hace que position: fixed se resuelva contra el. */}
+      <span className="mc-title-splash">{splash}</span>
 
       <nav className="mc-title-menu" aria-label="Menu principal">
         <button type="button" className="mc-title-btn" onClick={() => go('/singleplayer')}>
