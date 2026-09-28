@@ -96,8 +96,21 @@ export const ADVANCEMENT_TABS: AdvancementTab[] = [
     id: 'proyectos',
     label: 'Proyectos',
     background: 'adventure',
+    icon: 'blocks/crafting_table_top',
     nodes: projectNodes(),
   },
-  { id: 'experiencia', label: 'Experiencia', background: 'stone', nodes: EXPERIENCE },
-  { id: 'educacion', label: 'Educación', background: 'husbandry', nodes: EDUCATION },
+  {
+    id: 'experiencia',
+    label: 'Experiencia',
+    background: 'stone',
+    icon: 'blocks/beacon',
+    nodes: EXPERIENCE,
+  },
+  {
+    id: 'educacion',
+    label: 'Educación',
+    background: 'husbandry',
+    icon: 'items/book',
+    nodes: EDUCATION,
+  },
 ];

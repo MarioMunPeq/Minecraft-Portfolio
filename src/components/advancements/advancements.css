@@ -9,14 +9,19 @@
 /* ------------------------------------------------------------------ */
 
 .mc-adv-screen {
+  /* Ancho de la ventana, en un sitio solo porque el padding de la izquierda
+     tiene que reservar sitio para las pestanas. */
+  --adv-w: min(80vw, 1180px);
   align-items: center;
   justify-content: center;
-  padding: 32px;
+  /* La columna de pestanas (32 px de GUI) sobresale por la izquierda de la
+     ventana, asi que sin este margen se saldria de la pantalla. */
+  padding: 32px 32px 32px calc(32px + var(--adv-w) * 32 / 252);
 }
 
 .mc-adv-window {
   position: relative;
-  width: min(92vw, 1180px);
+  width: min(var(--adv-w), calc((100vh - 64px) * 1.8));
   aspect-ratio: 252 / 140;
   background-image: url('/gui/advancements/window.png');
   background-size: calc(256 / 252 * 100%) calc(256 / 140 * 100%);
@@ -129,21 +134,27 @@
 }
 
 /* ----------------------------- Pestañas ------------------------------ */
-/* Van pegadas a la esquina superior izquierda del hueco, como en la      */
-/* pantalla de logros del juego.                                          */
+/* Columna vertical pegada al borde exterior izquierdo, como en el juego: las */
+/* pestañas son una extension del marco, no un elemento encima. El sprite es  */
+/* de 32 px, con 4 px transparentes a la izquierda y 3 a la derecha en el que  */
+/* no esta seleccionado, asi que solo la activa llega al marco. Cada una lleva  */
+/* un item que identifica la seccion, porque el sprite es estrecho de sobra.    */
 
 .mc-adv-tabs {
   position: absolute;
-  top: 0;
-  left: 0;
+  /* 22 px de marco arriba y 14 a la izquierda: la columna arranca en la       */
+  /* esquina de la ventana y cae 32 px a su izquierda, ya fuera del marco.     */
+  top: calc(var(--win) * -22);
+  left: calc(var(--win) * -46);
   z-index: 2;
   display: flex;
+  flex-direction: column;
 }
 
 .mc-adv-tab {
   position: relative;
-  width: calc(var(--win) * 28);
-  height: calc(var(--win) * 32);
+  width: calc(var(--win) * 32);
+  height: calc(var(--win) * 28);
   padding: 0;
   border: none;
   background-color: transparent;
@@ -153,25 +164,32 @@
   image-rendering: crisp-edges;
   cursor: pointer;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  padding-bottom: calc(var(--win) * 3);
 }
 
-.mc-adv-tab-label {
-  font-family: inherit;
-  /* "Experiencia" es el nombre mas largo y tiene que caber en 28 px de  */
-  /* textura, asi que el cuerpo va justo.                                  */
-  font-size: calc(var(--win) * 4);
-  line-height: 1;
-  color: #3f3f3f;
-  text-shadow: none;
-  white-space: nowrap;
+.mc-adv-tab-icon {
+  width: calc(var(--win) * 16);
+  height: calc(var(--win) * 16);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
   pointer-events: none;
 }
 
-.mc-adv-tab[aria-selected='true'] .mc-adv-tab-label {
-  color: #1a1a1a;
+.mc-adv-tab[aria-selected='false'] .mc-adv-tab-icon {
+  filter: brightness(0.75);
+}
+
+.mc-adv-tab:hover .mc-adv-tab-icon {
+  filter: brightness(1.2);
+}
+
+.mc-adv-tab:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: calc(-1 * var(--win));
 }
 
 /* ---------------------------- Tooltip -------------------------------- */
@@ -198,6 +216,12 @@
 
 .mc-node-tooltip-techs {
   color: #9eff9e;
+}
+
+/* El tooltip de la mesa va a --gui-scale, que aqui seria enorme. */
+.mc-adv-tooltip .mc-tooltip-text {
+  font-size: 14px;
+  line-height: 1.2;
 }
 
 /* --------------------------- Caja de lore ---------------------------- */

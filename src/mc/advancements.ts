@@ -33,6 +33,8 @@ export interface AdvancementTab {
   id: string;
   label: string;
   background: AdvancementBackground;
+  /** Item que identifica la seccion en su pestaña. */
+  icon: string;
   nodes: AdvancementNode[];
 }
 

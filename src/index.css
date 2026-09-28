@@ -26,6 +26,19 @@
   box-sizing: border-box;
 }
 
+/**
+ * Los controles de formulario no heredan la fuente del documento: Chrome les
+ * pone Arial por defecto, asi que un button dentro de la interfaz se comia la
+ * tipografia de Minecraft. Esto lo arregla de una vez para todos.
+ */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
 html,
 body,
 #root {

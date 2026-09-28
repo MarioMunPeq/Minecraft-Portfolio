@@ -6,6 +6,7 @@ import type { AdvancementNode, AdvancementTab } from '../../mc/advancements';
 import { useAudio } from '../../audio/AudioContext';
 import { guiUrl } from '../crafting-table/guiUrl';
 import { BackButton } from '../crafting-table/BackButton';
+import { MinecraftTooltip } from '../crafting-table/MinecraftTooltip';
 import { LoreBox } from './LoreBox';
 import { NodeTooltip } from './NodeTooltip';
 import { nodeIconUrl } from './nodeIcon';
@@ -18,18 +19,20 @@ const FRAME: Record<AdvancementNode['kind'], string> = {
   challenge: 'gui/sprites/advancements/challenge_frame_obtained.png',
 };
 
+/** Las pestañas van en vertical, como en el juego: la de arriba, la del medio
+ *  y la de abajo. En el juego no llevan texto, se distinguen por el fondo. */
 const TAB_SLOTS = [
   {
-    inactive: 'gui/sprites/advancements/tab_above_left.png',
-    active: 'gui/sprites/advancements/tab_above_left_selected.png',
+    inactive: 'gui/sprites/advancements/tab_left_top.png',
+    active: 'gui/sprites/advancements/tab_left_top_selected.png',
   },
   {
-    inactive: 'gui/sprites/advancements/tab_above_middle.png',
-    active: 'gui/sprites/advancements/tab_above_middle_selected.png',
+    inactive: 'gui/sprites/advancements/tab_left_middle.png',
+    active: 'gui/sprites/advancements/tab_left_middle_selected.png',
   },
   {
-    inactive: 'gui/sprites/advancements/tab_above_right.png',
-    active: 'gui/sprites/advancements/tab_above_right_selected.png',
+    inactive: 'gui/sprites/advancements/tab_left_bottom.png',
+    active: 'gui/sprites/advancements/tab_left_bottom_selected.png',
   },
 ];
 
@@ -38,8 +41,10 @@ interface HoverState {
   at: { x: number; y: number };
 }
 
-/** Ancho en pixeles de textura que ocupan las tres pestañas. */
-const TABS_W = 84;
+interface TabHover {
+  label: string;
+  at: { x: number; y: number };
+}
 
 export function AdvancementsScreen() {
   const { playClick } = useAudio();
@@ -47,6 +52,7 @@ export function AdvancementsScreen() {
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
   const [hovered, setHovered] = useState<HoverState | null>(null);
+  const [hoveredTab, setHoveredTab] = useState<TabHover | null>(null);
   const [openNode, setOpenNode] = useState<{ node: AdvancementNode; anchor: { x: number; y: number } } | null>(
     null,
   );
@@ -96,19 +102,15 @@ export function AdvancementsScreen() {
   }, [fitTree]);
 
   /**
-   * Recentra despues de que la escala ya este aplicada. El area libre esta a
-   * la derecha de las pestañas, asi que se centra un poco mas alla del medio
-   * para que la raiz del arbol no quede debajo de ellas.
+   * Recentra despues de que la escala ya este aplicada. Las pestañas quedan
+   * fuera de la ventana, asi que el hueco se puede centrar tal cual.
    */
   useLayoutEffect(() => {
     const vp = viewportRef.current;
     const cv = canvasRef.current;
     if (!vp || !cv || cv.offsetWidth === 0) return;
     setPan(
-      clampPan(
-        (vp.clientWidth - cv.offsetWidth) / 2 + (TABS_W * scale) / 2,
-        (vp.clientHeight - cv.offsetHeight) / 2,
-      ),
+      clampPan((vp.clientWidth - cv.offsetWidth) / 2, (vp.clientHeight - cv.offsetHeight) / 2),
     );
   }, [activeTab, scale, clampPan]);
 
@@ -284,10 +286,18 @@ export function AdvancementsScreen() {
                   aria-selected={isActive}
                   className="mc-adv-tab"
                   style={{ backgroundImage: `url("${guiUrl(isActive ? slot.active : slot.inactive)}")` }}
+                  onMouseEnter={(e) => setHoveredTab({ label: tab.label, at: { x: e.clientX, y: e.clientY } })}
+                  onMouseLeave={() => setHoveredTab(null)}
+                  onFocus={() => setHoveredTab({ label: tab.label, at: { x: 0, y: 0 } })}
+                  onBlur={() => setHoveredTab(null)}
                   onClick={() => selectTab(tab)}
-                  title={tab.label}
+                  aria-label={tab.label}
                 >
-                  <span className="mc-adv-tab-label">{tab.label}</span>
+                  <span
+                    className="mc-adv-tab-icon"
+                    style={{ backgroundImage: `url("${guiUrl(`assets/mc/${tab.icon}.png`)}")` }}
+                    aria-hidden
+                  />
                 </button>
               );
             })}
@@ -296,6 +306,14 @@ export function AdvancementsScreen() {
       </div>
 
       {hovered && <NodeTooltip node={hovered.node} isVisible position={hovered.at} />}
+      {hoveredTab && hoveredTab.at.x > 0 && (
+        <MinecraftTooltip
+          text={hoveredTab.label}
+          isVisible
+          position={hoveredTab.at}
+          className="mc-adv-tooltip"
+        />
+      )}
       {openNode && (
         <LoreBox node={openNode.node} anchor={openNode.anchor} onClose={() => setOpenNode(null)} />
       )}

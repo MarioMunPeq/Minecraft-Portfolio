@@ -4,12 +4,14 @@ interface MinecraftTooltipProps {
   text: string;
   isVisible: boolean;
   position?: { x: number; y: number };
+  /** Añadida al tooltip cuando el tamaño por defecto no encaja. */
+  className?: string;
 }
 
 const OFFSET = 14;
 const MARGIN = 8;
 
-export function MinecraftTooltip({ text, isVisible, position }: MinecraftTooltipProps) {
+export function MinecraftTooltip({ text, isVisible, position, className = '' }: MinecraftTooltipProps) {
   if (!isVisible || !position) return null;
 
   // El panel que contiene el slot es un contenedor de tamaño (container-type),
@@ -22,7 +24,7 @@ export function MinecraftTooltip({ text, isVisible, position }: MinecraftTooltip
 
   return createPortal(
     <div
-      className="mc-tooltip"
+      className={`mc-tooltip ${className}`.trim()}
       style={{ left: Math.max(left, MARGIN), top }}
       role="tooltip"
     >
