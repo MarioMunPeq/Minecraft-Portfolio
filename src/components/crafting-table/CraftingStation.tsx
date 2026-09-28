@@ -6,14 +6,14 @@ import { ProjectList } from './ProjectList';
 import { RecipeGrid } from './RecipeGrid';
 import { ResultSlot } from './ResultSlot';
 import { InventoryGrid } from './InventoryGrid';
-import { BookModal } from './BookModal';
+import { ChestModal } from './ChestModal';
 
 export function CraftingStation() {
   const { playClick, playLevelup } = useAudio();
   const [selectedProject, setSelectedProject] = useState<Project>(PROJECTS[0]);
   const [hoveredSlotId, setHoveredSlotId] = useState<string | null>(null);
   const [hoverPosition, setHoverPosition] = useState<{ x: number; y: number } | null>(null);
-  const [isBookOpen, setIsBookOpen] = useState(false);
+  const [isChestOpen, setIsChestOpen] = useState(false);
   const [isResultReady, setIsResultReady] = useState(false);
 
   const hover = (id: string | null, position?: { x: number; y: number }) => {
@@ -30,7 +30,7 @@ export function CraftingStation() {
     if (!isResultReady) return;
     playClick();
     playLevelup();
-    setIsBookOpen(true);
+    setIsChestOpen(true);
   };
 
   const handleRevealEnd = () => {
@@ -74,10 +74,10 @@ export function CraftingStation() {
         />
       </div>
 
-      <BookModal
+      <ChestModal
         project={selectedProject}
-        isOpen={isBookOpen}
-        onClose={() => setIsBookOpen(false)}
+        isOpen={isChestOpen}
+        onClose={() => setIsChestOpen(false)}
       />
     </div>
   );
