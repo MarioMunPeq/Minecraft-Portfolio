@@ -196,8 +196,15 @@
 
 /* El slot de resultado de esta textura es un rectangulo de 18x26; el item */
  /* se centra dentro. */
+/* El marco de la textura es de 18x26, asi que el boton lo ocupa entero y el
+   item de 16x16 se centra dentro. */
 .mc-result-slot {
   z-index: 1;
+  width: calc(18 * var(--px));
+  height: calc(26 * var(--px));
+}
+
+.mc-result-slot .mc-item-sprite {
   width: calc(16 * var(--px));
   height: calc(16 * var(--px));
 }
@@ -240,30 +247,56 @@
 }
 
 /* ---------------------------- Tooltip ------------------------------ */
-
+/* El tooltip se portal a document.body, asi que no puede usar --px (una
+   unidad de container query que solo existe dentro del panel). Se escala
+   con la ventana, que es de donde sale tambien el tamano del panel. Padding
+   y borde van en em para que crezcan con la misma fuente. */
 .mc-tooltip {
+  --tip: clamp(11px, min(2.6vh, 1.15vw), 24px);
   position: fixed;
-  z-index: 1000;
+  /* Por encima de todos los overlays (la GUI de aldeano y el cofre estan en
+     2000 y el lightbox en 3000), que si no se pinta debajo y no se ve. */
+  z-index: 4000;
   pointer-events: none;
   background: rgba(12, 0, 12, 0.94);
-  border: 2px solid #000000;
+  border: 0.16em solid #000000;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.25),
-    0 0 0 1px rgba(0, 0, 0, 0.8);
-  padding: 4px 6px;
+    inset 0 0 0 0.08em rgba(255, 255, 255, 0.25),
+    0 0 0 0.08em rgba(0, 0, 0, 0.8);
+  padding: 0.25em 0.5em;
   white-space: nowrap;
 }
 
 .mc-tooltip-text {
   font-family: 'MinecraftPortfolio', monospace;
-  font-size: 12px;
-  line-height: 1.2;
+  font-size: var(--tip);
+  line-height: 1.25;
   color: #ffffff;
-  text-shadow: 2px 2px 0 #000000;
+  text-shadow: 0.12em 0.12em 0 #000000;
   white-space: pre-line;
 }
 
 /* -------------------------- Boton volver --------------------------- */
+
+/* Miniauda de la pantalla: dice donde hay que clicar y se retira sola en
+   cuanto se abre el cofre por primera vez. */
+.mc-craft-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 24px;
+  margin: 0;
+  padding: 0 24px;
+  text-align: center;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: calc(6 * var(--tui));
+  line-height: calc(8 * var(--tui));
+  text-shadow: calc(1 * var(--tui)) calc(1 * var(--tui)) 0 #000000;
+  pointer-events: none;
+  animation: mc-fade-in 0.25s ease-out;
+}
+
 
 .mc-back-button {
   position: absolute;

@@ -5,10 +5,12 @@ import { Slot } from './Slot';
 
 /**
  * El slot de resultado de esta textura es un rectangulo de 18x26 en (119, 30),
- * no un cuadrado. El item va de 16x16 centrado dentro: 1px a los lados, 5 arriba.
+ * no un cuadrado. El boton ocupa el marco entero para que la zona clicable
+ * sea la que se ve, y el item de 16x16 queda centrado dentro por flexbox:
+ * 1px a los lados y 5px arriba y abajo.
  */
-const RESULT_X = 120;
-const RESULT_Y = 35;
+const RESULT_X = 119;
+const RESULT_Y = 30;
 
 interface ResultSlotProps {
   project: Project;

@@ -1,5 +1,7 @@
 @import './components/crafting-table/crafting-table.css';
 @import './components/advancements/advancements.css';
+@import './components/villager/villager.css';
+@import './components/title-screen.css';
 
 @font-face {
   font-family: 'MinecraftPortfolio';
@@ -14,6 +16,11 @@
   --mc-text: #ffffff;
   --mc-text-shadow: #000000;
   --gui-scale: 4;
+
+  /* Un pixel de la GUI del juego, cuya resolucion de referencia es 427x240.
+     Se comparte para que el menu de titulo y la seleccion de mundo usen la
+     misma medida y los botones salgan del mismo tamano. */
+  --tui: min(calc(100vw / 427), calc(100vh / 240));
 
   --ws-bg: #2b2b2b;
   --ws-shadow: #000000;
@@ -198,55 +205,53 @@ body,
   image-rendering: crisp-edges;
 }
 
+/* ------------------------------------------------------------------ */
+/* Seleccion de mundo                                                  */
+/* ------------------------------------------------------------------ */
+/* Todo se mide con --tui, el pixel de la GUI del juego (referencia de */
+/* 427x240). El panel del juego mide unos 305 px de GUI: la fila de  */
+/* arriba lleva dos botones de 150 y la de abajo cuatro de 55.        */
+
 .ws-column {
-  --ws-ui: 1.333333px;
   position: absolute;
-  top: max(139px, 33.333333vh);
+  top: max(60px, 14vh);
+  bottom: max(24px, 5vh);
   left: 50%;
   z-index: 2;
-  width: var(--ws-w);
-  max-width: 693.333333px;
-  transform: translate(-50%, -50%);
+  width: min(calc(305 * var(--tui)), calc(100vw - 32px));
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  container-type: inline-size;
-}
-
-@supports (width: 1cqw) {
-  .ws-column {
-    --ws-ui: 0.192307692cqw;
-  }
 }
 
 .ws-title {
   flex: none;
-  margin: calc(24 * var(--ws-ui)) 0 0;
+  margin: 0;
   color: #ffffff;
-  font-size: calc(32 * var(--ws-ui));
+  font-size: calc(9 * var(--tui));
   font-weight: 400;
   line-height: 1;
   text-align: center;
-  text-shadow: calc(1 * var(--ws-ui)) calc(1 * var(--ws-ui)) 0 var(--ws-shadow);
+  text-shadow: calc(1 * var(--tui)) calc(1 * var(--tui)) 0 var(--ws-shadow);
   letter-spacing: 0;
 }
 
 .ws-search {
   position: relative;
-  width: 100%;
-  max-width: 693.333333px;
-  height: calc(34 * var(--ws-ui));
-  margin: calc(20 * var(--ws-ui)) auto 0;
+  width: min(calc(185 * var(--tui)), 100%);
+  height: calc(12 * var(--tui));
+  margin: calc(6 * var(--tui)) auto 0;
   flex: none;
 }
 
 .ws-search-icon {
   position: absolute;
-  left: calc(8 * var(--ws-ui));
+  left: calc(2 * var(--tui));
   top: 50%;
   z-index: 1;
-  width: calc(12 * var(--ws-ui));
-  height: calc(12 * var(--ws-ui));
+  width: calc(8 * var(--tui));
+  height: calc(8 * var(--tui));
   transform: translateY(-50%);
   pointer-events: none;
   image-rendering: pixelated;
@@ -255,18 +260,17 @@ body,
 
 .ws-search-input {
   width: 100%;
-  height: calc(34 * var(--ws-ui));
-  padding: 0 calc(8 * var(--ws-ui)) 0 calc(28 * var(--ws-ui));
+  height: calc(12 * var(--tui));
+  padding: 0 calc(3 * var(--tui)) 0 calc(13 * var(--tui));
   border: none;
   outline: none;
   background: url('/gui/sprites/widget/text_field.png') no-repeat center / 100% 100%;
-  background-size: 100% 100%;
   color: #ffffff;
   caret-color: #ffffff;
   font-family: inherit;
-  font-size: calc(12 * var(--ws-ui));
+  font-size: calc(7 * var(--tui));
   line-height: 1;
-  text-shadow: calc(1 * var(--ws-ui)) calc(1 * var(--ws-ui)) 0 var(--ws-shadow);
+  text-shadow: calc(1 * var(--tui)) calc(1 * var(--tui)) 0 var(--ws-shadow);
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
@@ -277,13 +281,14 @@ body,
 
 .ws-list {
   width: 100%;
-  max-width: 693.333333px;
-  margin: calc(16 * var(--ws-ui)) auto 0;
+  margin: calc(5 * var(--tui)) 0 0;
   padding: 0;
-  flex: none;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
   background-image: url('/gui/menu_list_background.png');
   background-repeat: repeat;
-  background-size: calc(16 * var(--ws-ui)) calc(16 * var(--ws-ui));
+  background-size: calc(6 * var(--tui)) calc(6 * var(--tui));
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
@@ -292,10 +297,10 @@ body,
   position: relative;
   display: flex;
   align-items: center;
-  gap: calc(8 * var(--ws-ui));
+  gap: calc(4 * var(--tui));
   width: 100%;
-  height: calc(56 * var(--ws-ui));
-  padding: calc(6 * var(--ws-ui));
+  min-height: calc(28 * var(--tui));
+  padding: calc(2 * var(--tui));
   cursor: pointer;
 }
 
@@ -306,9 +311,9 @@ body,
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.08s;
-  border: calc(4 * var(--ws-ui)) solid transparent;
+  border: calc(2 * var(--tui)) solid transparent;
   border-image: url('/gui/sprites/container/slot_highlight_back.png') 4 fill /
-    calc(4 * var(--ws-ui)) stretch;
+    calc(2 * var(--tui)) stretch;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
@@ -318,8 +323,8 @@ body,
 }
 
 .ws-entry-icon {
-  width: calc(44 * var(--ws-ui));
-  height: calc(44 * var(--ws-ui));
+  width: calc(24 * var(--tui));
+  height: calc(24 * var(--tui));
   flex-shrink: 0;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
@@ -331,15 +336,15 @@ body,
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: calc(2 * var(--ws-ui));
+  gap: calc(1 * var(--tui));
   line-height: 1;
 }
 
 .ws-entry-name {
   color: #ffffff;
-  font-size: calc(14 * var(--ws-ui));
+  font-size: calc(8 * var(--tui));
   font-weight: bold;
-  text-shadow: calc(1 * var(--ws-ui)) calc(1 * var(--ws-ui)) 0 var(--ws-shadow);
+  text-shadow: calc(1 * var(--tui)) calc(1 * var(--tui)) 0 var(--ws-shadow);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -347,56 +352,67 @@ body,
 
 .ws-entry-meta {
   color: #c0c0c0;
-  font-size: calc(11 * var(--ws-ui));
-  text-shadow: calc(1 * var(--ws-ui)) calc(1 * var(--ws-ui)) 0 var(--ws-shadow);
+  font-size: calc(7 * var(--tui));
+  text-shadow: calc(1 * var(--tui)) calc(1 * var(--tui)) 0 var(--ws-shadow);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* Las filas de botones van al pie y alineadas a la izquierda, como en el
+   juego: la primera con dos botones de 150 y la segunda con cuatro de 55. */
 .ws-buttons {
-  width: 100%;
-  max-width: 693.333333px;
-  margin: calc(24 * var(--ws-ui)) auto 0;
-  padding: 0;
   flex: none;
+  margin: calc(6 * var(--tui)) 0 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: calc(4 * var(--ws-ui));
+  gap: calc(2 * var(--tui));
 }
 
 .ws-buttons-row {
-  width: 100%;
   display: flex;
-  gap: calc(4 * var(--ws-ui));
+  justify-content: flex-start;
+  gap: calc(5 * var(--tui));
 }
 
 .ws-button {
-  min-width: 0;
-  height: calc(32 * var(--ws-ui));
-  padding: 0 calc(6 * var(--ws-ui));
-  flex: 1 1 0;
+  flex: none;
+  width: calc(150 * var(--tui));
+  height: calc(20 * var(--tui));
+  padding: 0 calc(4 * var(--tui));
   border: none;
   background: url('/gui/sprites/widget/button.png') no-repeat center / 100% 100%;
   color: #ffffff;
   cursor: pointer;
   font-family: inherit;
-  font-size: calc(13 * var(--ws-ui));
+  font-size: calc(8 * var(--tui));
   line-height: 1;
-  text-shadow: calc(1 * var(--ws-ui)) calc(1 * var(--ws-ui)) 0 var(--ws-shadow);
+  text-shadow: calc(1 * var(--tui)) calc(1 * var(--tui)) 0 var(--ws-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
+  overflow: hidden;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+}
+
+/* La fila de abajo son cuatro botones que se reparten todo el ancho del
+   panel, como en el juego. Con tres se quedaba un hueco de 70px a la
+   derecha, asi que el ancho es el que sobra y no uno fijo. */
+.ws-buttons-row:last-child .ws-button {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  font-size: calc(7 * var(--tui));
 }
 
 .ws-button-play:hover {
   background-image: url('/gui/sprites/widget/button_highlighted.png');
 }
 
-.ws-button-timeline:hover {
+.ws-button-back:hover {
   background-image: url('/gui/sprites/widget/button_highlighted.png');
 }
 
@@ -409,71 +425,101 @@ body,
 /* Loading screen                                                      */
 /* ------------------------------------------------------------------ */
 
+/* El juego usa el bloque de tierra en mosaico como fondo y lo oscurece */
+/* con un velo negro para que la caja de carga sea lo unico que destaque.  */
 .mc-loading-screen {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #5d4037;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      #4a3228 0px,
-      #4a3228 4px,
-      #5d4037 4px,
-      #5d4037 8px,
-      #6d4c3f 8px,
-      #6d4c3f 12px,
-      #5d4037 12px,
-      #5d4037 16px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      #4a3228 0px,
-      #4a3228 4px,
-      #5d4037 4px,
-      #5d4037 8px,
-      #6d4c3f 8px,
-      #6d4c3f 12px,
-      #5d4037 12px,
-      #5d4037 16px
-    ),
-    repeating-linear-gradient(
-      45deg,
-      transparent 0px,
-      transparent 2px,
-      rgba(39, 26, 19, 0.3) 2px,
-      rgba(39, 26, 19, 0.3) 4px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      transparent 0px,
-      transparent 2px,
-      rgba(93, 64, 55, 0.2) 2px,
-      rgba(93, 64, 55, 0.2) 4px
-    );
-  background-size: 16px 16px;
-  background-repeat: repeat;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  background-color: #1d140f;
+  background-image: url('/assets/mc/blocks/dirt.png');
+  background-repeat: repeat;
+  background-size: calc(16 * var(--tui)) calc(16 * var(--tui));
+  image-rendering: pixelated;
+  overflow: hidden;
+  user-select: none;
+}
+
+.mc-loading-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.66);
+  pointer-events: none;
+}
+
+.mc-loading-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  perspective: calc(600 * var(--tui));
+}
+
+.mc-loading-percent {
+  font-family: 'MinecraftPortfolio', monospace;
+  font-size: calc(10 * var(--tui));
+  font-weight: 400;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: calc(1 * var(--tui)) calc(1 * var(--tui)) 0 var(--ws-shadow);
+  font-variant-numeric: tabular-nums;
+}
+
+.mc-loading-box {
+  --box: calc(96 * var(--tui));
+  width: var(--box);
+  height: var(--box);
+  margin-top: calc(5 * var(--tui));
+  padding: calc(3 * var(--tui));
+  background: #000000;
+  transform-origin: 50% 55%;
+  animation: mc-loading-tilt 2.4s ease-in-out infinite;
+  transition: transform 120ms linear;
+}
+
+.mc-loading-box-face {
+  width: 100%;
+  height: 100%;
+  background: #c6c6c6;
+  border: calc(2 * var(--tui)) solid #f2f2f2;
+  box-shadow:
+    inset 0 0 0 calc(1 * var(--tui)) #707070,
+    inset 0 0 0 calc(2 * var(--tui)) #9a9a9a;
+  position: relative;
+}
+
+/* Marco interior punteado, el marcador de la pantalla original. */
+.mc-loading-box-face::after {
+  content: '';
+  position: absolute;
+  inset: calc(7 * var(--tui));
+  border: calc(1 * var(--tui)) dashed #4f7a3a;
+}
+
+@keyframes mc-loading-tilt {
+  0%,
+  100% {
+    rotate: -1.5deg;
+  }
+  50% {
+    rotate: 1.5deg;
+  }
 }
 
 .mc-loading-text {
+  margin-top: calc(6 * var(--tui));
   font-family: 'MinecraftPortfolio', monospace;
-  font-size: 24px;
-  color: #e0e0e0;
-  text-shadow:
-    2px 2px 0 #000000,
-    3px 3px 0 #000000,
-    1px 1px 0 #000000;
-  letter-spacing: 1px;
+  font-size: calc(8 * var(--tui));
+  font-weight: 400;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: calc(1 * var(--tui)) calc(1 * var(--tui)) 0 var(--ws-shadow);
   white-space: nowrap;
   pointer-events: none;
-  user-select: none;
 }
 
 /* ------------------------------------------------------------------ */

@@ -1,0 +1,185 @@
+/* ------------------------------------------------------------------ */
+/* Menu principal, como la pantalla de titulo del juego               */
+/* ------------------------------------------------------------------ */
+/* --tui (definido en :root) es un pixel de la GUI de referencia de    */
+/* 427x240. Todas las medidas de abajo estan en pixeles de GUI, igual */
+/* que en el juego: el logo es de 256x64, los botones de 200x20 y la  */
+/* fila de abajo de 98x20.                                            */
+
+.mc-title {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: #ffffff;
+  user-select: none;
+}
+
+.mc-title-stack {
+  position: absolute;
+  top: calc(16 * var(--tui));
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mc-title-logo {
+  width: calc(256 * var(--tui));
+  height: calc(64 * var(--tui));
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(calc(2 * var(--tui)) calc(3 * var(--tui)) 0 rgba(0, 0, 0, 0.45));
+}
+
+/* minecraft.png es un lienzo de 1024x256, pero el logo solo ocupa los 175
+   primeros pixeles de alto: los 81 que quedan son transparente. A 64 tui de
+   alto eso son 20 tui de hueco, que es justo lo que separa la edicion del
+   logo. El margen negativo los cancela y la deja casi superpuesta, como en
+   la pantalla oficial. */
+.mc-title-edition {
+  width: calc(160 * var(--tui));
+  height: calc(20 * var(--tui));
+  margin-top: calc(-20 * var(--tui));
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(calc(1 * var(--tui)) calc(2 * var(--tui)) 0 rgba(0, 0, 0, 0.45));
+}
+
+/* El texto amarillo del juego, inclinado y solapado sobre el borde derecho
+   del logo, como en la pantalla de titulo. */
+.mc-title-splash {
+  position: absolute;
+  top: calc(20 * var(--tui));
+  left: calc(100% - 56 * var(--tui));
+  color: #ffff00;
+  font-size: calc(7 * var(--tui));
+  line-height: 1.1;
+  white-space: nowrap;
+  transform: rotate(-20deg);
+  transform-origin: left center;
+  text-shadow:
+    calc(1 * var(--tui)) calc(1 * var(--tui)) 0 #3f3f3f,
+    calc(2 * var(--tui)) 0 0 #3f3f3f;
+}
+
+/* Arriba del todo, justo bajo el "Java Edition". Con cinco filas hay que
+   subirlo un poco para que la ultima no choque con la version de abajo. */
+.mc-title-menu {
+  position: absolute;
+  top: calc(100 * var(--tui));
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(4 * var(--tui));
+}
+
+.mc-title-btn {
+  width: calc(200 * var(--tui));
+  height: calc(20 * var(--tui));
+  padding: 0 calc(8 * var(--tui));
+  border: none;
+  background: url('/gui/sprites/widget/button.png') no-repeat center / 100% 100%;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: calc(8 * var(--tui));
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: calc(1 * var(--tui)) calc(1 * var(--tui)) 0 #000000;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mc-title-btn:hover {
+  background-image: url('/gui/sprites/widget/button_highlighted.png');
+}
+
+.mc-title-btn-inert,
+.mc-title-btn-small {
+  background-image: url('/gui/sprites/widget/button_disabled.png');
+  cursor: default;
+}
+
+/* Sin esto el :hover de .mc-title-btn gana por especificidad (0,2,0 contra
+   0,1,0) y los botones deshabilitados se iluminan al pasar el raton. */
+.mc-title-btn-inert:hover,
+.mc-title-btn-small:hover {
+  background-image: url('/gui/sprites/widget/button_disabled.png');
+}
+
+/* Los enlaces externos usan el mismo aspecto que los botones. */
+.mc-title-btn[href] {
+  text-decoration: none;
+}
+
+.mc-title-btn[href]:hover {
+  background-image: url('/gui/sprites/widget/button_highlighted.png');
+}
+
+.mc-title-btn[href]:focus-visible {
+  outline: calc(1 * var(--tui)) solid #ffffff;
+  outline-offset: calc(-1 * var(--tui));
+}
+
+/* Fila de enlaces: al haber dos se reparten el ancho como la fila de abajo. */
+.mc-title-menu-row {
+  display: flex;
+  gap: calc(4 * var(--tui));
+}
+
+.mc-title-menu-row .mc-title-btn {
+  width: calc(98 * var(--tui));
+  font-size: calc(7 * var(--tui));
+}
+
+/* La fila de abajo va separada del resto, como en el juego. */
+.mc-title-menu-bottom {
+  display: flex;
+  gap: calc(4 * var(--tui));
+  margin-top: calc(10 * var(--tui));
+}
+
+.mc-title-btn-small {
+  width: calc(98 * var(--tui));
+  font-size: calc(7 * var(--tui));
+}
+
+.mc-title-version,
+.mc-title-copyright {
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+  margin: 0;
+  color: #ffffff;
+  font-size: calc(5 * var(--tui));
+  line-height: 1.2;
+  text-shadow: calc(1 * var(--tui)) calc(1 * var(--tui)) 0 #000000;
+}
+
+.mc-title-version {
+  left: 0;
+}
+
+.mc-title-copyright {
+  right: 0;
+}
+
+@media (max-width: 900px) {
+  .mc-title-menu {
+    top: auto;
+    bottom: calc(30 * var(--tui));
+  }
+
+  .mc-title-splash {
+    display: none;
+  }
+}

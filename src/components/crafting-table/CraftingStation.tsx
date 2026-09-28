@@ -15,6 +15,7 @@ export function CraftingStation() {
   const [hoverPosition, setHoverPosition] = useState<{ x: number; y: number } | null>(null);
   const [isChestOpen, setIsChestOpen] = useState(false);
   const [isResultReady, setIsResultReady] = useState(false);
+  const [isHintDone, setIsHintDone] = useState(false);
 
   const hover = (id: string | null, position?: { x: number; y: number }) => {
     setHoveredSlotId(id);
@@ -30,6 +31,8 @@ export function CraftingStation() {
     if (!isResultReady) return;
     playClick();
     playLevelup();
+    // La miniauda desaparece en cuanto se sabe donde hay que clicar.
+    setIsHintDone(true);
     setIsChestOpen(true);
   };
 
@@ -79,6 +82,13 @@ export function CraftingStation() {
         isOpen={isChestOpen}
         onClose={() => setIsChestOpen(false)}
       />
+
+      {!isHintDone && (
+        <p className="mc-craft-hint">
+          Elige un proyecto, espera a la receta y haz clic en el item del
+          resultado para abrir su cofre
+        </p>
+      )}
     </div>
   );
 }

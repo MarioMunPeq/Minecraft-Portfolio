@@ -1,0 +1,338 @@
+/* ------------------------------------------------------------------ */
+/* Aldeano bibliotecario del menu + su GUI de encantamientos           */
+/* ------------------------------------------------------------------ */
+
+/* Va en la esquina inferior derecha del menu de titulo, que es donde queda
+   hueco libre: los botones ocupan el centro y el copyright solo la ultima
+   linea. */
+.mc-villager {
+  position: absolute;
+  right: 3%;
+  bottom: 5%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  --vh: 7;
+}
+
+@media (max-height: 700px) {
+  .mc-villager {
+    --vh: 6;
+  }
+}
+
+@media (max-width: 900px) {
+  .mc-villager {
+    display: none;
+  }
+}
+
+
+/* La cara es un recorte 8x10 de la textura, ampliado con --vh. Al venir la
+   textura a 64x64, el fondo tambien se amplia para que el recorte siga
+   cayendo en el sitio. */
+.mc-villager-face {
+  flex: none;
+  display: block;
+  width: calc(8px * var(--vh));
+  height: calc(10px * var(--vh));
+  background-image: var(--vt);
+  background-repeat: no-repeat;
+  background-size: calc(64px * var(--vh)) calc(64px * var(--vh));
+  background-position: calc(-8px * var(--vh)) calc(-8px * var(--vh));
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  transition: transform 0.12s ease-out;
+}
+
+.mc-villager:hover .mc-villager-face {
+  transform: scale(1.08);
+}
+
+.mc-villager:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 4px;
+}
+
+/* Bocadillo de dialogue, al estilo del chat del juego. */
+.mc-villager-bubble {
+  position: relative;
+  max-width: 190px;
+  margin-bottom: 4px;
+  padding: 7px 9px;
+  border: 2px solid #000000;
+  background: rgba(20, 20, 24, 0.92);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1.45;
+  text-align: left;
+  text-shadow: 1px 1px 0 #000000;
+  pointer-events: none;
+}
+
+/* La colita del bocadillo. */
+.mc-villager-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #000000;
+  border-bottom: 2px solid #000000;
+  background: rgba(20, 20, 24, 0.92);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+@media (max-width: 900px) {
+  .mc-villager-bubble {
+    max-width: 78vw;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Mesa de encantamientos (enchanting_table.png, GUI de 176x166)      */
+/* ------------------------------------------------------------------ */
+
+.mc-enchant-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.72);
+  animation: mc-fade-in 0.14s ease-out;
+}
+
+.mc-enchant {
+  position: relative;
+  height: min(72vh, 620px);
+  aspect-ratio: 176 / 166;
+  --px: calc(100cqw / 176);
+  /* El atlas es de 256x256 y la ventana ocupa sus 176x166 de la esquina
+     superior izquierda, asi que se muestra entero y se recorta con el div. */
+  background-image: url('/gui/container/enchanting_table.png');
+  background-size: calc(256 / 176 * 100%) calc(256 / 166 * 100%);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  container-type: size;
+  animation: mc-chest-in 0.18s ease-out;
+}
+
+/* Titulo de la ventana, arriba a la izquierda. */
+.mc-enchant-title,
+.mc-enchant-label {
+  position: absolute;
+  color: #404040;
+  font-size: calc(7 * var(--px));
+  line-height: calc(9 * var(--px));
+  text-shadow: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+.mc-enchant-label {
+  font-size: calc(6 * var(--px));
+  line-height: calc(8 * var(--px));
+  color: #404040;
+}
+
+/* El objeto que se encanta: recuadro de 20x20 con el item dentro. */
+.mc-enchant-target {
+  position: absolute;
+  width: calc(16 * var(--px));
+  height: calc(16 * var(--px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+}
+
+.mc-enchant-target img {
+  width: calc(16 * var(--px));
+  height: calc(16 * var(--px));
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Las dos ranuras de entrada de abajo a la izquierda. */
+.mc-enchant-input {
+  position: absolute;
+  width: calc(16 * var(--px));
+  height: calc(16 * var(--px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+}
+
+.mc-enchant-input img {
+  width: calc(16 * var(--px));
+  height: calc(16 * var(--px));
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* La segunda ranura se deja vacia, como en el juego. */
+.mc-enchant-input-empty {
+  cursor: default;
+}
+
+/* Las tres filas de opcion de la derecha. */
+.mc-enchant-row {
+  position: absolute;
+  width: calc(78 * var(--px));
+  height: calc(17 * var(--px));
+  display: flex;
+  align-items: center;
+  padding: 0 calc(2 * var(--px));
+  overflow: hidden;
+  text-shadow: calc(1 * var(--px)) calc(1 * var(--px)) 0 #000000;
+  pointer-events: none;
+}
+
+.mc-enchant-row-icon {
+  flex: none;
+  width: calc(8 * var(--px));
+  height: calc(8 * var(--px));
+  margin-right: calc(2 * var(--px));
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Los jeroglificos de las filas: un glifo de 8x8 recortado del atlas SGA. */
+.mc-sga {
+  flex: 0 1 auto;
+  display: flex;
+  min-width: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* El color es el del juego: EnchantmentScreen dibuja el nombre con
+   ARGB.opaque((col & 0xFEFEFE) >> 1) sobre col = -9937334, que se queda en
+   #342F25. El atlas es blanco con alfa, asi que el glifo se pinta con mask.
+   El verde que se recuerda es el de las particulas que salen de los
+   estantes, no el del texto de las filas. */
+.mc-sga-glyph {
+  flex: none;
+  width: calc(8 * var(--px));
+  height: calc(8 * var(--px));
+  background-color: var(--sga-ink, #342f25);
+  mask-image: url('/fonts/ascii_sga.png');
+  mask-repeat: no-repeat;
+  mask-size: calc(128 * var(--px)) calc(128 * var(--px));
+}
+
+.mc-enchant-row-filler {
+  flex: 1 1 auto;
+  min-width: calc(2 * var(--px));
+}
+
+.mc-enchant-row-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e8e8e8;
+  font-size: calc(5 * var(--px));
+  line-height: calc(7 * var(--px));
+}
+
+.mc-enchant-row-level {
+  flex: none;
+  margin-left: calc(2 * var(--px));
+  font-size: calc(6 * var(--px));
+  line-height: calc(8 * var(--px));
+}
+
+/* Las habilidades, en la primera fila del inventario. */
+.mc-enchant-skill {
+  position: absolute;
+  width: calc(16 * var(--px));
+  height: calc(16 * var(--px));
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mc-enchant-skill img {
+  width: calc(16 * var(--px));
+  height: calc(16 * var(--px));
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+}
+
+/* El color del nivel va detras del item, como el fondo de una ranura. */
+.mc-enchant-skill::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--px));
+  background: var(--lvl, transparent);
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+/* El numero del nivel, como el contador de un stack. */
+.mc-enchant-skill-level {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: #ffffff;
+  font-size: calc(6 * var(--px));
+  line-height: 1;
+  text-shadow: calc(1 * var(--px)) calc(1 * var(--px)) 0 #000000;
+  pointer-events: none;
+}
+
+.mc-enchant-skill:hover img {
+  filter: brightness(1.25);
+}
+
+.mc-enchant-skill:focus-visible {
+  outline: calc(1 * var(--px)) solid #ffffff;
+  outline-offset: calc(-2 * var(--px));
+}
+
+/* Elige el item: se marca con el recuadro blanco del propio juego. */
+.mc-enchant-skill[aria-pressed='true'] {
+  outline: calc(1 * var(--px)) solid #ffffff;
+  outline-offset: calc(-1 * var(--px));
+}
+
+.mc-enchant-close {
+  position: absolute;
+  width: calc(12 * var(--px));
+  height: calc(12 * var(--px));
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.mc-enchant-close:hover {
+  opacity: 1;
+}
+
+.mc-enchant-close img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}

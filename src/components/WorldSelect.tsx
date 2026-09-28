@@ -27,9 +27,9 @@ export function WorldSelect() {
     navigate('/cargando');
   };
 
-  const handleAdvancementsClick = () => {
+  const handleBackClick = () => {
     playClick();
-    navigate('/advancements');
+    navigate('/');
   };
 
   return (
@@ -84,10 +84,14 @@ export function WorldSelect() {
             <button type="button" className="ws-button ws-button-inert">
               Delete
             </button>
-            <button type="button" className="ws-button ws-button-timeline" onClick={handleAdvancementsClick}>
-              Logros
-            </button>
             <button type="button" className="ws-button ws-button-inert">
+              Recreate
+            </button>
+            <button
+              type="button"
+              className="ws-button ws-button-back"
+              onClick={handleBackClick}
+            >
               Back
             </button>
           </div>
