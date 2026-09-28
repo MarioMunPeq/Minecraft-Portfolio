@@ -5,6 +5,22 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portfolio de Mario Muñoz</title>
+    <script>
+      // Si se ha entrado por el 404.html de GitHub Pages, la ruta pedida esta
+      // guardada en sessionStorage. Se restituye con replaceState antes de que
+      // monte React, para que el router lea la ruta correcta al inicializarse.
+      (function () {
+        var key = 'minecraft-portfolio:path';
+        var saved;
+        try {
+          saved = sessionStorage.getItem(key);
+          if (saved) sessionStorage.removeItem(key);
+        } catch (error) {
+          return;
+        }
+        if (saved) window.history.replaceState(null, '', saved);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

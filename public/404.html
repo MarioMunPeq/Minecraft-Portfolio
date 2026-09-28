@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Portfolio de Mario Muñoz</title>
+    <script>
+      /*
+       * GitHub Pages no tiene rewrite: solo existe index.html en la raiz, asi
+       * que al recargar en /crafting-table busca ese fichero, no lo encuentra
+       * y devuelve este 404. Aqui se guarda la ruta pedida y se vuelve a la
+       * raiz, donde el script de index.html la restituye antes de que arranque
+       * la SPA.
+       *
+       * OJO: la BASE tiene que coincidir con el `base` de vite.config.ts.
+       * Los ficheros de public/ se copian tal cual, sin sustituciones.
+       */
+      (function () {
+        var BASE = '/Minecraft-Portfolio/';
+        try {
+          sessionStorage.setItem(
+            'minecraft-portfolio:path',
+            window.location.pathname + window.location.search,
+          );
+        } catch (error) {
+          /* Sin sessionStorage (modo privado) no hay deep link, pero al menos
+             la portada carga. */
+        }
+        window.location.replace(BASE);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirigiendo al portfolio&hellip;</p>
+  </body>
+</html>
