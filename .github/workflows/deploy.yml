@@ -2,7 +2,10 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ['main']
+    # El repo usa master, no main: con 'main' aqui el workflow no se disparaba
+    # nunca. Se listan las dos para que siga funcionando si algun dia se
+    # renombra la rama.
+    branches: ['main', 'master']
   workflow_dispatch:
 
 permissions:
@@ -29,6 +32,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Comprobar contenido
+        run: npm run check && npm run lint
 
       - name: Build
         run: npm run build
